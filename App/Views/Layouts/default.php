@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>taskBook</title>
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/Articles-Badges.css">
-    <link rel="stylesheet" href="/assets/css/Login-Form-Basic.css">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/assets/css/Articles-Badges.css">
+    <link rel="stylesheet" href="/public/assets/css/Login-Form-Basic.css">
+    <link rel="stylesheet" href="/public/assets/css/styles.css">
 </head>
 
 <body>
@@ -82,7 +82,7 @@
                             <div class="card mb-5">
                                 <div class="card-body p-sm-5">
                                     <h2 class="text-center mb-4">Создать новую задачу</h2>
-                                    <form method="post">
+                                    <form method="post" action="/message/set">
                                         <div class="mb-3"><input class="form-control" type="text" id="name-3"
                                                                  name="name" placeholder="Name"></div>
                                         <div class="mb-3"><input class="form-control" type="email" id="email-3"
@@ -151,9 +151,9 @@
     </div>
 </div>
 
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/jquery-3.6.0.min.js"></script>
-<script src="/assets/js/jscrypt.js"></script>
+<script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/public/assets/js/jquery-3.6.0.min.js"></script>
+<script src="/public/assets/js/jscrypt.js"></script>
 </body>
 
 </html>

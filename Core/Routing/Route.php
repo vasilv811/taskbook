@@ -8,7 +8,7 @@ class Route
 {
     private string $method;
     private string $path;
-    private $handler;
+    private mixed $handler;
 
     /**
      * Route constructor.
@@ -26,7 +26,7 @@ class Route
     /**
      * @return mixed
      */
-    public function getHandler()
+    public function getHandler(): mixed
     {
         return $this->handler;
     }
@@ -34,7 +34,7 @@ class Route
     /**
      * @param mixed $handler
      */
-    public function setHandler($handler): void
+    public function setHandler(mixed $handler): void
     {
         $this->handler = $handler;
     }

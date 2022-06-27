@@ -1,3 +1,3 @@
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php?youcantusethisnameincustomgetparams=$0 [QSA]
+AddDefaultCharset utf-8
+RewriteEngine On
+RewriteRule (.*) public/$1
