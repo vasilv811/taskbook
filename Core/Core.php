@@ -20,7 +20,6 @@ class Core
     public function handleHttpRequest(Request $request): Response
     {
         $route = $this->router->getRouteForRequest($request);
-
         if (!$route) {
             return new Response('Такая страница не найдена. Ошибка 404', [], Response::CODE_NOT_FOUND);
         }

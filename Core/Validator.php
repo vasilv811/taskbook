@@ -22,7 +22,7 @@ class Validator
      */
     public function isValidName($name): bool
     {
-        $regexp = "/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/";
+        $regexp = "/[A-Za-zА-Яа-яЁё]{2,}/";
         return preg_match($regexp, $name);
     }
 

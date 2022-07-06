@@ -34,18 +34,43 @@ class SetMessageController
      */
     public function setMessage(Request $request): Response
     {
-
         $postParam = $request->getPostParam();
         $name = $postParam['name'] ?? null;
         $email = $postParam['email'] ?? null;
-        $message = $postParam['message'] ?? null;
+        $message = $postParam['task'] ?? null;
         if (!$this->validator->isValidName($name)) {
-            return new JsonResponse(['error' => 'Name введен некорректно']);
+            return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
         }
         if (!$this->validator->isValidEmail($email)) {
             return new JsonResponse(['error' => 'Email введен некорректно']);
         }
+        if ($message === null) {
+            return new JsonResponse(['error' => 'Напишите задачу']);
+        }
         $this->tasks->createMessage($message);
+
+        $nameArr = $this->tasks->getNameByName($name);
+        $taskArr = $this->tasks->getTaskId();
+        if (!$nameArr) {
+            $this->tasks->createName($name);
+            $nameArr = $this->tasks->getNameByName($name);
+            $this->tasks->createNameTask($nameArr['name_id'], $taskArr['task_id']);
+        }else{
+            $this->tasks->createNameTask($nameArr['name_id'], $taskArr['task_id']);
+        }
+
+        $emailArr = $this->tasks->getEmailByEmail($email);
+        if (!$emailArr) {
+            $this->tasks->createEmail($email);
+            $emailArr = $this->tasks->getEmailByEmail($email);
+            $this->tasks->createEmailTask($emailArr['email_id'], $taskArr['task_id']);
+        }else{
+            $this->tasks->createemailTask($emailArr['email_id'], $taskArr['task_id']);
+        }
+        return new JsonResponse(['success' => 'Задача добавлена']);
+
+
+
         die;
         $phoneArray = $this->tasks->createMessage($message);
         if ($phoneArray) {
@@ -57,7 +82,6 @@ class SetMessageController
         if (!$emailArray) {
             $this->contacts->createEmail($email);
             $emailArray = $this->contacts->getEmailByEmail($email);
-
         }
         //Создание телефона в базе
         $this->contacts->createPhone($emailArray['id_email'], $phone);

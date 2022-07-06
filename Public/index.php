@@ -9,6 +9,8 @@ use Core\Renderer;
 use App\Controllers\SetMessageController;
 use App\Models\Tasks;
 use Core\Validator;
+use App\Controllers\GetMessageController;
+use App\Controllers\GetNameController;
 
 require dirname(__DIR__) . '/Config/libs.php';
 
@@ -41,9 +43,29 @@ $setMessage = new Route (
     ]
 );
 
+$getMessage = new Route (
+    Request::METHOD_POST,
+    '/message/get',
+    [
+        new GetMessageController($tasks),
+        'getMessage',
+    ]
+);
+
+$getName = new Route (
+    Request::METHOD_POST,
+    '/name/get',
+    [
+        new GetNameController($tasks),
+        'getName',
+    ]
+);
+
 $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
+$router->addRoute($getMessage);
+$router->addRoute($getName);
 
 $core = new Core($router);
 
