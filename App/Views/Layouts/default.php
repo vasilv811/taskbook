@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <button id="sendTask" class="btn btn-primary" type="submit">Создать задачу</button>
+                <button id="sendTask" class="btn btn-primary" type="button">Создать задачу</button>
             </div>
             <div class="mt-2">
                 <div class="row">
@@ -144,7 +144,7 @@
             <p class="w-lg-50">Добавить задачу</p>
         </div>
     </div>
-    <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-md-center" id="task">
+    <div id="task">
 <!--        <div id="task">-->
 <!--        <div class="col">-->
 <!--            <div class="p-4"><span class="badge rounded-pill bg-primary mb-2"><span-->
@@ -171,20 +171,41 @@
 <!--            </div>-->
         </div>
         </div>
-        <div class="col">
-            <div class="p-4"><span class="badge rounded-pill bg-primary mb-2">Article</span>
-                <h4>Lorem libero donec</h4>
-                <p>Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in,
-                    egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-                <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50"
-                                         src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">
-                    <div>
-                        <p class="fw-bold mb-0">John Smith</p>
-                        <p class="text-muted mb-0">Erat netus</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--        <div class="col">-->
+<!--            <div class="p-4"><span class="badge rounded-pill bg-primary mb-2">Article</span>-->
+<!--                <h4>Lorem libero donec</h4>-->
+<!--                <p>Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in,-->
+<!--                    egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>-->
+<!--                <div class="d-flex"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="50" height="50"-->
+<!--                                         src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png">-->
+<!--                    <div>-->
+<!--                        <p class="fw-bold mb-0">John Smith</p>-->
+<!--                        <p class="text-muted mb-0">Erat netus</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+        <ul id="pag" class="mt-5 pagination justify-content-center">
+            <li id="pagination" class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+<!--            <div id="pagination">-->
+<!--            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--            </div>-->
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+
+
     </div>
 <!--</div>-->
 

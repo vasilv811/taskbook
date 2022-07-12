@@ -129,6 +129,51 @@ class Tasks
         );
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function getAllTasksByTask(){
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT COUNT(*) FROM task"
+        );
+        return $query->fetchAll(\PDO::FETCH_NUM);
+    }
+
+//    public function getTask($limit, $count){
+//        $db = Db::getDb();
+//        $query = $db->query(
+//            "SELECT * FROM task LIMIT $limit, $count"
+//        );
+//        return $query->fetchAll(\PDO::FETCH_ASSOC);
+//    }
+
+    public function getTask($limit, $count)
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        task.task_id,
+        task.task,
+        nametask.name_id,
+        nametask.task_id,
+        emailtask.email_id,
+        emailtask.task_id,
+        name.name_id,
+        name.name,
+        email.email_id,
+        email.email
+        FROM task
+        LEFT JOIN nametask
+        ON  task.task_id = nametask.task_id
+        LEFT JOIN name
+        ON nametask.name_id = name.name_id
+        LEFT JOIN emailtask
+        ON task.task_id = emailtask.task_id
+        LEFT JOIN email
+        ON emailtask.email_id = email.email_id 
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
 //       n.name_id,
 //       n.name,

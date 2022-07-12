@@ -1,10 +1,26 @@
 $.ajax({
-    url: '/name/get',
+    url: '/paginationCount/get',
     type: 'POST',
     cache: false,
     dataType: 'json',
     success: function (dataName) {
-        console.log(dataName)
+        console.log(dataName[0])
+        var dataPag = dataName[0];
+        var countPage = Math.ceil(dataPag[0] / 3)
+        var paginations = ''
+let i = 1;
+        while (i <= countPage){
+            paginations +=
+                '<li class="page-item">'+
+                '<a id="page" class="page-link" href='+i+'>'+
+            i +
+                '</a>'+
+        '</li>'
+            i++
+        }
+        console.log(paginations)
+        // $('ul:eq(0)').after(paginations)
+        $('#pagination').after(paginations)
     }
     })
 
@@ -17,22 +33,22 @@ $.ajax({
         console.log(dataMes)
         var dataMessage = ''
         for (var v of dataMes) {
-            dataMessage += '<div className="col">' +
-                '<div className="p-4">' +
-                '<span className="badge rounded-pill bg-primary mb-2">' +
+            dataMessage +=
+                '<div class="mt-3 border rounded-2">'+
+                '<div class="col">' +
+                '<div class="p-4">' +
+                '<span class="badge rounded-pill bg-primary mb-2">' +
                 '<span style="font-weight: normal !important;">' +
                 'Задача №  ' +
                 v.task_id +
                 '</span>' +
                 '</span>' +
                 '<h6>Дата:&nbsp;</h6>' +
-                '<h6><strong>Имя: </strong></h6>' +
-                v.name+
-                '<h6>email:</h6>' +
-                '<p>' +
-                v.task +
-                '</p>' +
+                '<h6><strong>Имя: </strong>' + v.name + '</h6>'+
+                '<h6><strong>Email: </strong>' + v.email + '</h6>' +
+                '<h6><strong>Задача: </strong>' + v.task + '</h6>' +
                 '</div>' +
+                '</div>'+
                 '</div>'
         }
         console.log(dataMessage)
@@ -42,6 +58,47 @@ $.ajax({
 
 })
 
+$('ul').on("click", "#page", function (e) {
+    e.preventDefault()
+    console.log("99999999999999999")
+    let page = $(this).attr('href')
+
+    $.ajax({
+        url: '/pagination/get',
+        type: 'POST',
+        cache: false,
+        data: {'page': page},
+        dataType: 'json',
+        success: function (dataName1) {
+console.log(dataName1)
+            console.log(page)
+            var dataMessage = ''
+            for (var v of dataName1) {
+                dataMessage +=
+                    '<div class="mt-3 border rounded-2">'+
+                    '<div class="col">' +
+                    '<div class="p-4">' +
+                    '<span class="badge rounded-pill bg-primary mb-2">' +
+                    '<span style="font-weight: normal !important;">' +
+                    'Задача №  ' +
+                    v.task_id +
+                    '</span>' +
+                    '</span>' +
+                    '<div class="align-content-end">' +'jjj' +'</div>' +
+                    '<h6>Дата:&nbsp;</h6>' +
+                    '<h6><strong>Имя: </strong>' + v.name + '</h6>'+
+                    '<h6><strong>Email: </strong>' + v.email + '</h6>' +
+                    '<h6><strong>Задача: </strong>' + v.task + '</h6>' +
+                    '</div>' +
+                    '</div>'+
+                    '</div>'
+            }
+            console.log(dataMessage)
+
+            $('#task').html(dataMessage)
+        }
+    })
+})
 
 $("#sendTask").on("click", function () {
     var nameSet = $("#nameSet").val()

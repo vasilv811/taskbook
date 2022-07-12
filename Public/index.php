@@ -11,6 +11,7 @@ use App\Models\Tasks;
 use Core\Validator;
 use App\Controllers\GetMessageController;
 use App\Controllers\GetNameController;
+use App\Controllers\PaginationController;
 
 require dirname(__DIR__) . '/Config/libs.php';
 
@@ -61,11 +62,31 @@ $getName = new Route (
     ]
 );
 
+$getCountPagination = new Route (
+    Request::METHOD_POST,
+    '/paginationCount/get',
+    [
+        new PaginationController($tasks),
+        'getAllTasks',
+    ]
+);
+
+$getPagination = new Route (
+    Request::METHOD_POST,
+    '/pagination/get',
+    [
+        new PaginationController($tasks),
+        'getPagination',
+    ]
+);
+
 $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
 $router->addRoute($getMessage);
 $router->addRoute($getName);
+$router->addRoute($getCountPagination);
+$router->addRoute($getPagination);
 
 $core = new Core($router);
 
