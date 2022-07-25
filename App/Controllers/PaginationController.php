@@ -20,7 +20,11 @@ class PaginationController
     public function getAllTasks(Request $request): JsonResponse
     {
         $getCountTask = $this->tasks->getAllTasksByTask();
-        return new JsonResponse($getCountTask);
+        if (!array_key_exists('admin', $_SESSION)){
+            $_SESSION['admin'] = false;
+        }
+        $getCountTask['admin'] = $_SESSION['admin'];
+        return new JsonResponse([$getCountTask]);
     }
 
     public function getPagination(Request $request): JsonResponse
@@ -33,6 +37,13 @@ class PaginationController
         $count = $this->tasks->getAllTasksByTask();
 //        $count = $count[0];
         $getTask = $this->tasks->getTask($limit, 3);
-        return new JsonResponse($getTask);
+//        $getTask['admin'] = $_SESSION['admin'];
+//        if ($_SESSION['admin'] === false){
+//            $session = ['admin' => false];
+//        }else{
+//            $session = ['admin' => true];
+//        }
+//        $getTask[] = ['admin' => false];
+        return new JsonResponse([$getTask]);
     }
 }

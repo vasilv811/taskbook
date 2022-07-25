@@ -16,22 +16,30 @@ class GetMessageController
      */
     private Tasks $tasks;
 
+    /**
+     * GetMessageController constructor.
+     * @param \App\Models\Tasks $tasks
+     */
     public function __construct(Tasks $tasks)
     {
         $this->tasks = $tasks;
     }
 
-    public function getMessage(Request $request): JsonResponse
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getAllMessage(Request $request): JsonResponse
     {
-        $getMessage = $this->tasks->getAllByMessage();
-//        $getName = $this->tasks->getNameByMessage();
-//        $getEmail = $this->tasks->getEmailByMessage();
-//        $getNameTask = $this->tasks->getNameTaskByMessage();
-//        $getEmailTask = $this->tasks->getEmailTaskByMessage();
-//        foreach ($getMessage as $k => $v) {
-//            if ($k === $getName[''])
-//        }
+        $getAllMessage = $this->tasks->getAllByMessage();
+        return new JsonResponse($getAllMessage);
+    }
 
-        return new JsonResponse($getMessage);
+    public function getMessageByTaskId(Request $request)
+    {
+        $id = $request->getPostParam();
+        $id = $id['task_id'];
+        $getMessageByTaskId = $this->tasks->getByMessageTaskId($id);
+        return new JsonResponse($getMessageByTaskId);
     }
 }

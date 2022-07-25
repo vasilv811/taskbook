@@ -174,7 +174,48 @@ class Tasks
         );
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+
+public function getAdminCheck()
+{
+    $db = Db::getDb();
+    $query = $db->query("SELECT * FROM users");
+    return $query->fetchAll(\PDO::FETCH_ASSOC);
 }
+
+    /**
+     * Получаем все поля по task_id
+     * @return mixed
+     */
+    public function getByMessageTaskId(int $id)
+    {
+        $db = Db::getDb();
+        $query = $db->prepare("SELECT     
+        task.task_id,
+        task.task,
+        nametask.name_id,
+        nametask.task_id,
+        emailtask.email_id,
+        emailtask.task_id,
+        name.name_id,
+        name.name,
+        email.email_id,
+        email.email
+        FROM task
+        LEFT JOIN nametask
+        ON  task.task_id = nametask.task_id
+        LEFT JOIN name
+        ON nametask.name_id = name.name_id
+        LEFT JOIN emailtask
+        ON task.task_id = emailtask.task_id
+        LEFT JOIN email
+        ON emailtask.email_id = email.email_id 
+        WHERE task.task_id = :id");
+        $query->execute(['id' => $id]);
+        return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+}
+
 //       n.name_id,
 //       n.name,
 //       et.email_id,

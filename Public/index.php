@@ -12,8 +12,13 @@ use Core\Validator;
 use App\Controllers\GetMessageController;
 use App\Controllers\GetNameController;
 use App\Controllers\PaginationController;
+use App\Controllers\AdminController;
+
 
 require dirname(__DIR__) . '/Config/libs.php';
+session_start();
+
+$container = new DI\Container();
 
 $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
 $tasks = new Tasks();
@@ -49,7 +54,7 @@ $getMessage = new Route (
     '/message/get',
     [
         new GetMessageController($tasks),
-        'getMessage',
+        'getAllMessage',
     ]
 );
 
@@ -80,6 +85,42 @@ $getPagination = new Route (
     ]
 );
 
+$adminCheck = new Route(
+    Request::METHOD_POST,
+    '/admin/check',
+    [
+        new AdminController($tasks),
+        'getAdminCheck',
+    ]
+);
+
+$adminOutput = new Route(
+    Request::METHOD_POST,
+    '/admin/output',
+    [
+        new AdminController($tasks),
+        'getAdminOutput',
+    ]
+);
+
+$getRequestAdmin = new Route(
+    Request::METHOD_POST,
+    '/requestAdmin/get',
+    [
+        new AdminController($tasks),
+        'getRequestAdmin',
+    ]
+);
+
+$getMessageByTaskId = new Route(
+    Request::METHOD_POST,
+    '/mesagebytaskid/get',
+    [
+        new GetMessageController($tasks),
+        'getMessageByTaskId',
+    ]
+);
+
 $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
@@ -87,6 +128,10 @@ $router->addRoute($getMessage);
 $router->addRoute($getName);
 $router->addRoute($getCountPagination);
 $router->addRoute($getPagination);
+$router->addRoute($adminCheck);
+$router->addRoute($adminOutput);
+$router->addRoute($getRequestAdmin);
+$router->addRoute($getMessageByTaskId);
 
 $core = new Core($router);
 
