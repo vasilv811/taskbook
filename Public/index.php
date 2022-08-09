@@ -13,6 +13,8 @@ use App\Controllers\GetMessageController;
 use App\Controllers\GetNameController;
 use App\Controllers\PaginationController;
 use App\Controllers\AdminController;
+use App\Controllers\TaskController;
+use App\Controllers\UpdateMessageController;
 
 
 require dirname(__DIR__) . '/Config/libs.php';
@@ -121,6 +123,87 @@ $getMessageByTaskId = new Route(
     ]
 );
 
+$adminStatus = new Route(
+    Request::METHOD_POST,
+    '/adminstatus/check',
+    [
+        new AdminController($tasks),
+        'getStatusAdmin',
+    ]
+);
+
+$statusTask = new Route(
+    Request::METHOD_POST,
+    '/taskstatus/check',
+    [
+        new TaskController($tasks),
+        'taskStatus',
+    ]
+);
+
+$changeMessage = new Route(
+    Request::METHOD_POST,
+    '/chengemessage/set',
+    [
+        new UpdateMessageController($tasks,$validator),
+        'chengeMessage',
+    ]
+);
+
+$userSort = new Route(
+    Request::METHOD_POST,
+    '/usersort/get',
+    [
+        new GetMessageController($tasks),
+        'getMessageBySortUser',
+    ]
+);
+
+$paginationUser = new Route(
+    Request::METHOD_POST,
+    '/paginationusers/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationUsers',
+    ]
+);
+
+$getStartPaginationUsers = new Route(
+    Request::METHOD_POST,
+    '/paginationcountusers/get',
+    [
+        new PaginationController($tasks),
+        'getStartPaginationUsers',
+    ]
+);
+
+$paginationEmail = new Route(
+    Request::METHOD_POST,
+    '/paginationemail/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationEmail',
+    ]
+);
+
+$paginationTaskComplete = new Route(
+    Request::METHOD_POST,
+    '/paginationucomplete/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationTaskComplete',
+    ]
+);
+
+$paginationTaskNotComplete = new Route(
+    Request::METHOD_POST,
+    '/paginationnotcomplete/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationTaskNotComplete',
+    ]
+);
+
 $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
@@ -132,6 +215,15 @@ $router->addRoute($adminCheck);
 $router->addRoute($adminOutput);
 $router->addRoute($getRequestAdmin);
 $router->addRoute($getMessageByTaskId);
+$router->addRoute($adminStatus);
+$router->addRoute($statusTask);
+$router->addRoute($changeMessage);
+$router->addRoute($userSort);
+$router->addRoute($paginationUser);
+$router->addRoute($getStartPaginationUsers);
+$router->addRoute($paginationEmail);
+$router->addRoute($paginationTaskComplete);
+$router->addRoute($paginationTaskNotComplete);
 
 $core = new Core($router);
 

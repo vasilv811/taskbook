@@ -34,6 +34,15 @@ public function getAdminCheck(Request $request){
         return new JsonResponse($_SESSION);
 }
 
+    public function getStatusAdmin(Request $request): JsonResponse
+    {
+        if (!array_key_exists('admin', $_SESSION)){
+            $_SESSION['admin'] = false;
+        }
+        $getStatusAdmin['admin'] = $_SESSION['admin'];
+        return new JsonResponse($getStatusAdmin);
+    }
+
 public function getAdminOutput(){
         $_SESSION['admin'] = false;
         return new JsonResponse($_SESSION);

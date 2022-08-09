@@ -42,4 +42,14 @@ class GetMessageController
         $getMessageByTaskId = $this->tasks->getByMessageTaskId($id);
         return new JsonResponse($getMessageByTaskId);
     }
+
+    public function getMessageBySortUser (Request $request){
+        $user = $request->getPostParam();
+        $user = $user['user'];
+        $userId = $this->tasks->getUserIdByUsers($user);
+        $userId = $userId['name_id'];
+//        return new JsonResponse([$userId]);
+        $tasksBySortUser = $this->tasks->getTasksByUserId($userId);
+        return new JsonResponse($tasksBySortUser);
+    }
 }

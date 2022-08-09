@@ -35,10 +35,11 @@ class SetMessageController
     public function setMessage(Request $request): Response
     {
         $postParam = $request->getPostParam();
-        $name = $postParam['name'] ?? null;
+        $user = $postParam['user'] ?? null;
         $email = $postParam['email'] ?? null;
         $message = $postParam['task'] ?? null;
-        if (!$this->validator->isValidName($name)) {
+        $status = $postParam['status'] ?? null;
+        if (!$this->validator->isValidName($user)) {
             return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
         }
         if (!$this->validator->isValidEmail($email)) {
@@ -47,25 +48,26 @@ class SetMessageController
         if ($message === null) {
             return new JsonResponse(['error' => 'Напишите задачу']);
         }
-        $this->tasks->createMessage($message);
+        $this->tasks->createMessage($message, $status);
 
-        $nameArr = $this->tasks->getNameByName($name);
-        $taskArr = $this->tasks->getTaskId();
-        if (!$nameArr) {
-            $this->tasks->createName($name);
-            $nameArr = $this->tasks->getNameByName($name);
-            $this->tasks->createNameTask($nameArr['name_id'], $taskArr['task_id']);
+        $userArr = $this->tasks->getUserByUsers($user);
+//        $taskArr = $this->tasks->getTaskId();
+
+        if (!$userArr) {
+            $this->tasks->createUser($user);
+            $userArr = $this->tasks->getUserByUsers($user);
+            $this->tasks->createUserIdByTasks($userArr['name_id']);
         }else{
-            $this->tasks->createNameTask($nameArr['name_id'], $taskArr['task_id']);
+            $this->tasks->createUserIdByTasks($userArr['name_id']);
         }
 
-        $emailArr = $this->tasks->getEmailByEmail($email);
+        $emailArr = $this->tasks->getEmailByEmails($email);
         if (!$emailArr) {
             $this->tasks->createEmail($email);
-            $emailArr = $this->tasks->getEmailByEmail($email);
-            $this->tasks->createEmailTask($emailArr['email_id'], $taskArr['task_id']);
+            $emailArr = $this->tasks->getEmailByEmails($email);
+            $this->tasks->createEmailTask($emailArr['email_id']);
         }else{
-            $this->tasks->createemailTask($emailArr['email_id'], $taskArr['task_id']);
+            $this->tasks->createEmailTask($emailArr['email_id']);
         }
         return new JsonResponse(['success' => 'Задача добавлена']);
 
