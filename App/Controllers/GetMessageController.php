@@ -35,7 +35,11 @@ class GetMessageController
         return new JsonResponse($getAllMessage);
     }
 
-    public function getMessageByTaskId(Request $request)
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getMessageByTaskId(Request $request): JsonResponse
     {
         $id = $request->getPostParam();
         $id = $id['task_id'];
@@ -43,7 +47,12 @@ class GetMessageController
         return new JsonResponse($getMessageByTaskId);
     }
 
-    public function getMessageBySortUser (Request $request){
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getMessageBySortUser(Request $request): JsonResponse
+    {
         $user = $request->getPostParam();
         $user = $user['user'];
         $userId = $this->tasks->getUserIdByUsers($user);

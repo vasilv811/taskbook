@@ -12,48 +12,69 @@ class PaginationController
 {
     private Tasks $tasks;
 
+    /**
+     * PaginationController constructor.
+     * @param \App\Models\Tasks $tasks
+     */
     public function __construct(Tasks $tasks)
     {
         $this->tasks = $tasks;
     }
 
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
     public function getAllTasks(Request $request): JsonResponse
     {
         $getCountTask = $this->tasks->getAllUserByTask();
-//        if (!array_key_exists('admin', $_SESSION)){
-//            $_SESSION['admin'] = false;
-//        }
-//        $getCountTask['admin'] = $_SESSION['admin'];
         return new JsonResponse([$getCountTask]);
     }
 
-    public function getStartPaginationUsers(Request $request): JsonResponse
-    {
-        $getCountTask = $this->tasks->getAllTasksByTask();
-//        if (!array_key_exists('admin', $_SESSION)){
-//            $_SESSION['admin'] = false;
-//        }
-//        $getCountTask['admin'] = $_SESSION['admin'];
-        return new JsonResponse([$getCountTask]);
-    }
-
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
     public function getPagination(Request $request): JsonResponse
     {
-//        $ggg = ['hi'];
         $request1 = $request;
         $param = $request1->getPostParam();
         $limit = $param['page'];
         $limit = $limit * 3 - 3;
-//        $count = $this->tasks->getAllTasksByTask();
-//        $count = $count[0];
         $getTask = $this->tasks->getTask($limit, 3);
         $getTask['admin'] = $_SESSION['admin'];
-//        if ($_SESSION['admin'] === false){
-//            $session = ['admin' => false];
-//        }else{
-//            $session = ['admin' => true];
-//        }
-//        $getTask[] = ['admin' => false];
+        return new JsonResponse([$getTask]);
+    }
+
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getAllTasksEmails(Request $request): JsonResponse
+    {
+        $request1 = $request;
+        $param = $request1->getPostParam();
+        $emailId = $param['email'];
+        $limit = $param['page'];
+        $limit = $limit * 3 - 3;
+        $getTask = $this->tasks->getTaskEmail($limit, 3, $emailId);
+        $getTask['admin'] = $_SESSION['admin'];
+        return new JsonResponse([$getTask]);
+    }
+
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getAllTasksUser(Request $request): JsonResponse
+    {
+        $request1 = $request;
+        $param = $request1->getPostParam();
+        $userId = $param['userId'];
+        $limit = $param['page'];
+        $limit = $limit * 3 - 3;
+        $getTask = $this->tasks->getTaskUser($limit, 3, $userId);
+        $getTask['admin'] = $_SESSION['admin'];
         return new JsonResponse([$getTask]);
     }
 
@@ -79,6 +100,46 @@ class PaginationController
         return new JsonResponse([$getTask]);
     }
 
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getPaginationStatusFinished(Request $request): JsonResponse
+    {
+        $request1 = $request;
+        $param = $request1->getPostParam();
+        $limit = $param['page'];
+        $limit = $limit * 3 - 3;
+        $statusFinishedCount = $this->tasks->getAllStatusFinishedByTask();
+        $statusFinishedCount = $statusFinishedCount[0];
+        $getTask = $this->tasks->getTaskStatusFinishedPag($limit, 3);
+        $getTask['admin'] = $_SESSION['admin'];
+        $getTask['count'] = $statusFinishedCount[0];
+        return new JsonResponse([$getTask]);
+    }
+
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
+    public function getPaginationStatusNonFinished(Request $request): JsonResponse
+    {
+        $request1 = $request;
+        $param = $request1->getPostParam();
+        $limit = $param['page'];
+        $limit = $limit * 3 - 3;
+        $statusNonFinishedCount = $this->tasks->getAllStatusNonFinishedByTask();
+        $statusNonFinishedCount = $statusNonFinishedCount[0];
+        $getTask = $this->tasks->getTaskStatusNonFinishedPag($limit, 3);
+        $getTask['admin'] = $_SESSION['admin'];
+        $getTask['count'] = $statusNonFinishedCount[0];
+        return new JsonResponse([$getTask]);
+    }
+
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
     public function getPaginationEmail(Request $request): JsonResponse
     {
         $request1 = $request;
@@ -87,14 +148,9 @@ class PaginationController
         $limit = $param['page'];
         $limit = $limit * 3 - 3;
         $emailId = $this->tasks->getEmailIdByEmails($email);
-//        return new JsonResponse([$emailId]);
         $emailId = $emailId[0];
         $emailId = $emailId['email_id'];
-//                return new JsonResponse([$emailId]);
-
         $emailCount = $this->tasks->getAllEmailCountByTask($emailId);
-//                        return new JsonResponse([$emailCount]);
-
         $emailCount = $emailCount[0];
         $getTask = $this->tasks->getTaskEmailPag($limit, 3, $emailId);
         $getTask['admin'] = $_SESSION['admin'];
@@ -102,11 +158,16 @@ class PaginationController
         return new JsonResponse([$getTask]);
     }
 
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
     public function getPaginationTaskComplete(Request $request): JsonResponse
     {
         $request1 = $request;
         $param = $request1->getPostParam();
         $limit = $param['page'];
+//        return new JsonResponse([$limit]);
         $limit = $limit * 3 - 3;
         $completeTaskCount = $this->tasks->getAllTaskCompleteCountByTask();
         $getTask = $this->tasks->getCompleteTaskPag($limit, 3);
@@ -115,6 +176,10 @@ class PaginationController
         return new JsonResponse([$getTask]);
     }
 
+    /**
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
+     */
     public function getPaginationTaskNotComplete(Request $request): JsonResponse
     {
         $request1 = $request;

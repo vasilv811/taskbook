@@ -9,14 +9,23 @@ use Core\Db;
 class Tasks
 {
 
-    public function createMessage(string $message, $status)
+
+    /**
+     * @param $message
+     * @param $status
+     */
+    public function createMessage($message, $status)
     {
         $db = Db::getDb();
         $query = $db->prepare("INSERT tasks (text, status) VALUES (:text, :status)");
         $query->execute(['text' => $message, 'status' => $status]);
     }
 
-    public function getUserByUsers(string $name)
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getUserByUsers(string $name): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM users WHERE name = :name");
@@ -24,6 +33,9 @@ class Tasks
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param string $name
+     */
     public function createUser(string $name)
     {
         $db = Db::getDb();
@@ -31,19 +43,9 @@ class Tasks
         $query->execute(['name' => $name]);
     }
 
-//    public function getLastIdByTasks(){
-//        $db = Db::getDb();
-//        $query = $db->query("SELECT * FROM tasks ORDER BY task_id DESC LIMIT 1");
-//        return $query->fetch(\PDO::FETCH_ASSOC);
-//    }
-
-    public function getTaskId()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM tasks ORDER BY task_id DESC LIMIT 1");
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
-
+    /**
+     * @param int $user_id
+     */
     public function createUserIdByTasks(int $user_id)
     {
         $db = Db::getDb();
@@ -51,7 +53,11 @@ class Tasks
         $query->execute(['user_id' => $user_id]);
     }
 
-    public function getEmailByEmails(string $email)
+    /**
+     * @param string $email
+     * @return mixed
+     */
+    public function getEmailByEmails(string $email): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
@@ -59,7 +65,11 @@ class Tasks
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function getUserIdByUsers(string $name)
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getUserIdByUsers(string $name): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM users WHERE name = :name");
@@ -67,7 +77,11 @@ class Tasks
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function getTasksByUserId(int $user_id)
+    /**
+     * @param int $user_id
+     * @return array
+     */
+    public function getTasksByUserId(int $user_id): array
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM tasks WHERE users_id = :user_id");
@@ -75,6 +89,9 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param string $email
+     */
     public function createEmail(string $email)
     {
         $db = Db::getDb();
@@ -82,6 +99,9 @@ class Tasks
         $query->execute(['email' => $email]);
     }
 
+    /**
+     * @param int $email_id
+     */
     public function createEmailTask(int $email_id)
     {
         $db = Db::getDb();
@@ -89,42 +109,10 @@ class Tasks
         $query->execute(['email_id' => $email_id]);
     }
 
-    public function getMessageByMessage()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM task");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getNameByMessage()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM name");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getEmailByMessage()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM email");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getEmailTaskByMessage()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM emailtask");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getNameTaskByMessage()
-    {
-        $db = Db::getDb();
-        $query = $db->query("SELECT * FROM nameltask");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getAllByMessage()
+    /**
+     * @return array
+     */
+    public function getAllByMessage(): array
     {
         $db = Db::getDb();
         $query = $db->query(
@@ -152,7 +140,11 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getAllUserByTask(){
+    /**
+     * @return array
+     */
+    public function getAllUserByTask(): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT COUNT(*) FROM tasks"
@@ -160,7 +152,12 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_NUM);
     }
 
-    public function getAllUserCountByTask($nameId){
+    /**
+     * @param int $nameId
+     * @return array
+     */
+    public function getAllUserCountByTask(int $nameId): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT COUNT(*) FROM tasks WHERE users_id = $nameId"
@@ -168,15 +165,11 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_NUM);
     }
 
-    public function getAllEmailCountByTask($emailId){
-        $db = Db::getDb();
-        $query = $db->query(
-            "SELECT COUNT(*) FROM tasks WHERE email_id = $emailId"
-        );
-        return $query->fetchAll(\PDO::FETCH_NUM);
-    }
-
-    public function getAllTaskCompleteCountByTask(){
+    /**
+     * @return array
+     */
+    public function getAllStatusFinishedByTask(): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT COUNT(*) FROM tasks WHERE status = 'finished'"
@@ -184,7 +177,11 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_NUM);
     }
 
-    public function getAllTaskNotCompleteCountByTask(){
+    /**
+     * @return array
+     */
+    public function getAllStatusNonFinishedByTask(): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT COUNT(*) FROM tasks WHERE status = 'nonFinished'"
@@ -192,15 +189,49 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_NUM);
     }
 
-//    public function getTask($limit, $count){
-//        $db = Db::getDb();
-//        $query = $db->query(
-//            "SELECT * FROM task LIMIT $limit, $count"
-//        );
-//        return $query->fetchAll(\PDO::FETCH_ASSOC);
-//    }
+    /**
+     * @param int $emailId
+     * @return array
+     */
+    public function getAllEmailCountByTask(int $emailId): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT COUNT(*) FROM tasks WHERE email_id = $emailId"
+        );
+        return $query->fetchAll(\PDO::FETCH_NUM);
+    }
 
-    public function getTask($limit, $count)
+    /**
+     * @return array
+     */
+    public function getAllTaskCompleteCountByTask(): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT COUNT(*) FROM tasks WHERE status = 'finished'"
+        );
+        return $query->fetchAll(\PDO::FETCH_NUM);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllTaskNotCompleteCountByTask(): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT COUNT(*) FROM tasks WHERE status = 'nonFinished'"
+        );
+        return $query->fetchAll(\PDO::FETCH_NUM);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $count
+     * @return array
+     */
+    public function getTask(int $limit, int $count): array
     {
         $db = Db::getDb();
         $query = $db->query(
@@ -224,31 +255,15 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-public function getTaskUserPag($limit, int $count, $nameId){
-    $db = Db::getDb();
-    $query = $db->query(
-        "SELECT 
-        tasks.users_id,
-        tasks.text,
-        tasks.email_id,
-        tasks.task_id,
-        tasks.status,
-        users.name_id,
-        users.name,
-        emails.email_id,
-        emails.address
-        FROM tasks
-        LEFT JOIN users
-        ON  tasks.users_id = users.name_id
-        LEFT JOIN emails
-        ON tasks.email_id = emails.email_id
-        WHERE tasks.users_id = $nameId
-        LIMIT $limit, $count"
-    );
-    return $query->fetchAll(\PDO::FETCH_ASSOC);
-}
 
-    public function getTaskEmailPag($limit, int $count, $emailId){
+    /**
+     * @param int $limit
+     * @param int $count
+     * @param int $emailId
+     * @return array
+     */
+    public function getTaskEmail(int $limit, int $count, int $emailId): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT 
@@ -266,13 +281,81 @@ public function getTaskUserPag($limit, int $count, $nameId){
         ON  tasks.users_id = users.name_id
         LEFT JOIN emails
         ON tasks.email_id = emails.email_id
-        WHERE tasks.email_id = $emailId
+WHERE tasks.email_id = $emailId
         LIMIT $limit, $count"
         );
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getCompleteTaskPag($limit, int $count){
+    /**
+     * @param int $limit
+     * @param int $count
+     * @param int $userId
+     * @return array
+     */
+    public function getTaskUser(int $limit, int $count, int $userId): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        tasks.users_id,
+        tasks.text,
+        tasks.email_id,
+        tasks.task_id,
+        tasks.status,
+        users.name_id,
+        users.name,
+        emails.email_id,
+        emails.address
+        FROM tasks
+        LEFT JOIN users
+        ON  tasks.users_id = users.name_id
+        LEFT JOIN emails
+        ON tasks.email_id = emails.email_id
+WHERE tasks.users_id = $userId
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $count
+     * @param int $nameId
+     * @return array
+     */
+    public function getTaskUserPag(int $limit, int $count, int $nameId): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        tasks.users_id,
+        tasks.text,
+        tasks.email_id,
+        tasks.task_id,
+        tasks.status,
+        users.name_id,
+        users.name,
+        emails.email_id,
+        emails.address
+        FROM tasks
+        LEFT JOIN users
+        ON  tasks.users_id = users.name_id
+        LEFT JOIN emails
+        ON tasks.email_id = emails.email_id
+        WHERE tasks.users_id = $nameId
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $count
+     * @return array
+     */
+    public function getTaskStatusFinishedPag(int $limit, int $count): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT 
@@ -296,7 +379,13 @@ public function getTaskUserPag($limit, int $count, $nameId){
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getNotCompleteTaskPag($limit, int $count){
+    /**
+     * @param int $limit
+     * @param int $count
+     * @return array
+     */
+    public function getTaskStatusNonFinishedPag(int $limit, int $count): array
+    {
         $db = Db::getDb();
         $query = $db->query(
             "SELECT 
@@ -320,7 +409,102 @@ public function getTaskUserPag($limit, int $count, $nameId){
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getNameIdByName($name)
+    /**
+     * @param int $limit
+     * @param int $count
+     * @param int $emailId
+     * @return array
+     */
+    public function getTaskEmailPag(int $limit, int $count, int $emailId): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        tasks.users_id,
+        tasks.text,
+        tasks.email_id,
+        tasks.task_id,
+        tasks.status,
+        users.name_id,
+        users.name,
+        emails.email_id,
+        emails.address
+        FROM tasks
+        LEFT JOIN users
+        ON  tasks.users_id = users.name_id
+        LEFT JOIN emails
+        ON tasks.email_id = emails.email_id
+        WHERE tasks.email_id = $emailId
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $count
+     * @return array
+     */
+    public function getCompleteTaskPag(int $limit, int $count): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        tasks.users_id,
+        tasks.text,
+        tasks.email_id,
+        tasks.task_id,
+        tasks.status,
+        users.name_id,
+        users.name,
+        emails.email_id,
+        emails.address
+        FROM tasks
+        LEFT JOIN users
+        ON  tasks.users_id = users.name_id
+        LEFT JOIN emails
+        ON tasks.email_id = emails.email_id
+        WHERE tasks.status = 'finished'
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $count
+     * @return array
+     */
+    public function getNotCompleteTaskPag(int $limit, int $count): array
+    {
+        $db = Db::getDb();
+        $query = $db->query(
+            "SELECT 
+        tasks.users_id,
+        tasks.text,
+        tasks.email_id,
+        tasks.task_id,
+        tasks.status,
+        users.name_id,
+        users.name,
+        emails.email_id,
+        emails.address
+        FROM tasks
+        LEFT JOIN users
+        ON  tasks.users_id = users.name_id
+        LEFT JOIN emails
+        ON tasks.email_id = emails.email_id
+        WHERE tasks.status = 'nonFinished'
+        LIMIT $limit, $count"
+        );
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param mixed $name
+     * @return array
+     */
+    public function getNameIdByName(mixed $name): array
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM users WHERE name = :name");
@@ -328,15 +512,11 @@ public function getTaskUserPag($limit, int $count, $nameId){
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-//    public function getEmailIdByEmails($email)
-//    {
-//        $db = Db::getDb();
-//        $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
-//        $query->execute(['email' => $email]);
-//        return $query->fetchAll(\PDO::FETCH_ASSOC);
-//    }
-
-    public function getEmailIdByEmails($email)
+    /**
+     * @param mixed $email
+     * @return array
+     */
+    public function getEmailIdByEmails(mixed $email): array
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
@@ -344,21 +524,15 @@ public function getTaskUserPag($limit, int $count, $nameId){
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-public function getAdminCheck()
-{
-    $db = Db::getDb();
-    $query = $db->query("SELECT * FROM admins");
-    return $query->fetchAll(\PDO::FETCH_ASSOC);
-}
-
     /**
-     * Получаем все поля по task_id
+     * @param int $id
      * @return mixed
      */
-    public function getByMessageTaskId(int $id)
+    public function getByMessageTaskId(int $id): mixed
     {
         $db = Db::getDb();
-        $query = $db->prepare("SELECT
+        $query = $db->prepare(
+            "SELECT
          tasks.users_id,
         tasks.text,
         tasks.email_id,
@@ -373,43 +547,61 @@ public function getAdminCheck()
         ON  tasks.users_id = users.name_id
         LEFT JOIN emails
         ON tasks.email_id = emails.email_id
-        WHERE task_id = :id");
+        WHERE task_id = :id"
+        );
         $query->execute(['id' => $id]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function taskStatus(){
-
-    }
-
-    public function updateMessageText($text, $status, $id){
+    /**
+     * @param mixed $text
+     * @param string $status
+     * @param int $id
+     * @return mixed
+     */
+    public function updateMessageText(mixed $text, string $status, int $id): mixed
+    {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE tasks SET text = :text, status = :status WHERE task_id = $id");
         $query->execute(['text' => $text, 'status' => $status]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function updateMessageUser($user, $id,){
+    /**
+     * @param mixed $user
+     * @param int $id
+     * @return mixed
+     */
+    public function updateMessageUser(mixed $user, int $id): mixed
+    {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE users SET name = :name WHERE name_id = $id");
         $query->execute(['name' => $user]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function updateMessageEmail($email, $id,){
+    /**
+     * @param mixed $email
+     * @param int $id
+     * @return mixed
+     */
+    public function updateMessageEmail(mixed $email, int $id): mixed
+    {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE emails SET address = :address WHERE email_id = $id");
         $query->execute(['address' => $email]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-}
+    /**
+     * @return array
+     */
+    public function getAdminCheck(): array
+    {
+        $db = Db::getDb();
+        $query = $db->query("SELECT * FROM admins");
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
-//       n.name_id,
-//       n.name,
-//       et.email_id,
-//       et.task_id,
-//       e.email_id,
-//       e.email
-//email.email_id,
-//        email.email
+
+}
