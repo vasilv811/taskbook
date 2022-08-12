@@ -28,17 +28,19 @@ class SetMessageController
         $this->validator = $validator;
     }
 
+
     /**
-     * @param Request $request
-     * @return Response
+     * @param \Core\Http\Request $request
+     * @return \Core\Http\JsonResponse
      */
-    public function setMessage(Request $request): Response
+    public function setMessage(Request $request): JsonResponse
     {
         $postParam = $request->getPostParam();
         $user = $postParam['user'] ?? null;
         $email = $postParam['email'] ?? null;
         $message = $postParam['task'] ?? null;
         $status = $postParam['status'] ?? null;
+//        return new JsonResponse([$status]);
         if (!$this->validator->isValidName($user)) {
             return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
         }
@@ -48,11 +50,9 @@ class SetMessageController
         if ($message === null) {
             return new JsonResponse(['error' => 'Напишите задачу']);
         }
+//        return new JsonResponse(['hi']);
         $this->tasks->createMessage($message, $status);
-
         $userArr = $this->tasks->getUserByUsers($user);
-//        $taskArr = $this->tasks->getTaskId();
-
         if (!$userArr) {
             $this->tasks->createUser($user);
             $userArr = $this->tasks->getUserByUsers($user);
@@ -60,7 +60,6 @@ class SetMessageController
         }else{
             $this->tasks->createUserIdByTasks($userArr['name_id']);
         }
-
         $emailArr = $this->tasks->getEmailByEmails($email);
         if (!$emailArr) {
             $this->tasks->createEmail($email);
@@ -70,23 +69,5 @@ class SetMessageController
             $this->tasks->createEmailTask($emailArr['email_id']);
         }
         return new JsonResponse(['success' => 'Задача добавлена']);
-
-
-
-        die;
-        $phoneArray = $this->tasks->createMessage($message);
-        if ($phoneArray) {
-            return new JsonResponse(['error' => 'Телефон уже существует в базе данных, введите другой телефон']);
-        }
-        //Получение email и создание если его нет
-        $emailArray = $this->contacts->getEmailByEmail($email);
-
-        if (!$emailArray) {
-            $this->contacts->createEmail($email);
-            $emailArray = $this->contacts->getEmailByEmail($email);
-        }
-        //Создание телефона в базе
-        $this->contacts->createPhone($emailArray['id_email'], $phone);
-        return new JsonResponse(['success' => 'Телефон добавлен в базу данных']);
     }
 }

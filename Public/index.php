@@ -10,18 +10,13 @@ use App\Controllers\SetMessageController;
 use App\Models\Tasks;
 use Core\Validator;
 use App\Controllers\GetMessageController;
-use App\Controllers\GetNameController;
 use App\Controllers\PaginationController;
 use App\Controllers\AdminController;
-use App\Controllers\TaskController;
 use App\Controllers\UpdateMessageController;
 
 
 require dirname(__DIR__) . '/Config/libs.php';
 session_start();
-
-$container = new DI\Container();
-
 $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
 $tasks = new Tasks();
 $validator = new Validator();
@@ -60,21 +55,30 @@ $getMessage = new Route (
     ]
 );
 
-$getName = new Route (
-    Request::METHOD_POST,
-    '/name/get',
-    [
-        new GetNameController($tasks),
-        'getName',
-    ]
-);
-
 $getCountPagination = new Route (
     Request::METHOD_POST,
-    '/paginationCount/get',
+    '/paginationcount/get',
     [
         new PaginationController($tasks),
         'getAllTasks',
+    ]
+);
+
+$getCountPaginationEmail = new Route (
+    Request::METHOD_POST,
+    '/paginationemailpage/get',
+    [
+        new PaginationController($tasks),
+        'getAllTasksEmails',
+    ]
+);
+
+$getCountPaginationUsers = new Route (
+    Request::METHOD_POST,
+    '/paginationuserpage/get',
+    [
+        new PaginationController($tasks),
+        'getAllTasksUser',
     ]
 );
 
@@ -107,7 +111,7 @@ $adminOutput = new Route(
 
 $getRequestAdmin = new Route(
     Request::METHOD_POST,
-    '/requestAdmin/get',
+    '/requestadmin/get',
     [
         new AdminController($tasks),
         'getRequestAdmin',
@@ -132,20 +136,12 @@ $adminStatus = new Route(
     ]
 );
 
-$statusTask = new Route(
-    Request::METHOD_POST,
-    '/taskstatus/check',
-    [
-        new TaskController($tasks),
-        'taskStatus',
-    ]
-);
 
 $changeMessage = new Route(
     Request::METHOD_POST,
     '/chengemessage/set',
     [
-        new UpdateMessageController($tasks,$validator),
+        new UpdateMessageController($tasks, $validator),
         'chengeMessage',
     ]
 );
@@ -165,6 +161,24 @@ $paginationUser = new Route(
     [
         new PaginationController($tasks),
         'getPaginationUsers',
+    ]
+);
+
+$paginationStatusFinished = new Route(
+    Request::METHOD_POST,
+    '/paginationstatusfinishedpage/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationStatusFinished',
+    ]
+);
+
+$paginationStatusNonFinished = new Route(
+    Request::METHOD_POST,
+    '/paginationstatusnonfinishedpage/get',
+    [
+        new PaginationController($tasks),
+        'getPaginationStatusNonFinished',
     ]
 );
 
@@ -208,7 +222,6 @@ $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
 $router->addRoute($getMessage);
-$router->addRoute($getName);
 $router->addRoute($getCountPagination);
 $router->addRoute($getPagination);
 $router->addRoute($adminCheck);
@@ -216,7 +229,6 @@ $router->addRoute($adminOutput);
 $router->addRoute($getRequestAdmin);
 $router->addRoute($getMessageByTaskId);
 $router->addRoute($adminStatus);
-$router->addRoute($statusTask);
 $router->addRoute($changeMessage);
 $router->addRoute($userSort);
 $router->addRoute($paginationUser);
@@ -224,6 +236,10 @@ $router->addRoute($getStartPaginationUsers);
 $router->addRoute($paginationEmail);
 $router->addRoute($paginationTaskComplete);
 $router->addRoute($paginationTaskNotComplete);
+$router->addRoute($getCountPaginationEmail);
+$router->addRoute($getCountPaginationUsers);
+$router->addRoute($paginationStatusFinished);
+$router->addRoute($paginationStatusNonFinished);
 
 $core = new Core($router);
 
