@@ -10,11 +10,14 @@ use Core\Http\Request;
 
 class PaginationController
 {
+    /**
+     * @var Tasks
+     */
     private Tasks $tasks;
 
     /**
      * PaginationController constructor.
-     * @param \App\Models\Tasks $tasks
+     * @param Tasks $tasks
      */
     public function __construct(Tasks $tasks)
     {
@@ -22,18 +25,17 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getAllTasks(Request $request): JsonResponse
+    public function getAllTasks(): JsonResponse
     {
         $getCountTask = $this->tasks->getAllUserByTask();
         return new JsonResponse([$getCountTask]);
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPagination(Request $request): JsonResponse
     {
@@ -47,8 +49,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getAllTasksEmails(Request $request): JsonResponse
     {
@@ -63,8 +65,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getAllTasksUser(Request $request): JsonResponse
     {
@@ -79,8 +81,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationUsers(Request $request): JsonResponse
     {
@@ -101,8 +103,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationStatusFinished(Request $request): JsonResponse
     {
@@ -119,8 +121,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationStatusNonFinished(Request $request): JsonResponse
     {
@@ -137,8 +139,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationEmail(Request $request): JsonResponse
     {
@@ -159,15 +161,14 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationTaskComplete(Request $request): JsonResponse
     {
         $request1 = $request;
         $param = $request1->getPostParam();
         $limit = $param['page'];
-//        return new JsonResponse([$limit]);
         $limit = $limit * 3 - 3;
         $completeTaskCount = $this->tasks->getAllTaskCompleteCountByTask();
         $getTask = $this->tasks->getCompleteTaskPag($limit, 3);
@@ -177,8 +178,8 @@ class PaginationController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getPaginationTaskNotComplete(Request $request): JsonResponse
     {

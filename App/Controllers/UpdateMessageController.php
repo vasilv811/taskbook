@@ -12,14 +12,19 @@ use Core\Validator;
 class UpdateMessageController
 {
     /**
-     * @var \App\Models\Tasks
+     * @var Tasks
      */
     private Tasks $tasks;
     /**
-     * @var \Core\Validator
+     * @var Validator
      */
     private Validator $validator;
 
+    /**
+     * UpdateMessageController constructor.
+     * @param Tasks $tasks
+     * @param Validator $validator
+     */
     public function __construct(Tasks $tasks, Validator $validator)
     {
         $this->tasks = $tasks;
@@ -27,8 +32,8 @@ class UpdateMessageController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function chengeMessage(Request $request): JsonResponse
     {

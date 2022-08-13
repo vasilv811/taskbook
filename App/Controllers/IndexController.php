@@ -9,6 +9,9 @@ use Core\Http\Response;
 
 class IndexController
 {
+    /**
+     * @var Renderer
+     */
     private Renderer $renderer;
 
     /**

@@ -12,13 +12,13 @@ class GetMessageController
 {
 
     /**
-     * @var \App\Models\Tasks
+     * @var Tasks
      */
     private Tasks $tasks;
 
     /**
      * GetMessageController constructor.
-     * @param \App\Models\Tasks $tasks
+     * @param Tasks $tasks
      */
     public function __construct(Tasks $tasks)
     {
@@ -26,18 +26,17 @@ class GetMessageController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getAllMessage(Request $request): JsonResponse
+    public function getAllMessage(): JsonResponse
     {
         $getAllMessage = $this->tasks->getAllByMessage();
         return new JsonResponse($getAllMessage);
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getMessageByTaskId(Request $request): JsonResponse
     {
@@ -48,8 +47,8 @@ class GetMessageController
     }
 
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getMessageBySortUser(Request $request): JsonResponse
     {
@@ -57,7 +56,6 @@ class GetMessageController
         $user = $user['user'];
         $userId = $this->tasks->getUserIdByUsers($user);
         $userId = $userId['name_id'];
-//        return new JsonResponse([$userId]);
         $tasksBySortUser = $this->tasks->getTasksByUserId($userId);
         return new JsonResponse($tasksBySortUser);
     }

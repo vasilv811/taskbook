@@ -10,19 +10,26 @@ use Core\Http\JsonResponse;
 
 class AdminController
 {
+
     /**
-     * @var \App\Models\Tasks
+     * @var Tasks
      */
     private Tasks $tasks;
 
+
+    /**
+     * AdminController constructor.
+     * @param Tasks $tasks
+     */
     public function __construct(Tasks $tasks)
     {
         $this->tasks = $tasks;
     }
 
+
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
     public function getAdminCheck(Request $request): JsonResponse
     {
@@ -40,11 +47,11 @@ class AdminController
         return new JsonResponse($_SESSION);
     }
 
+
     /**
-     * @param \Core\Http\Request $request
-     * @return \Core\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getStatusAdmin(Request $request): JsonResponse
+    public function getStatusAdmin(): JsonResponse
     {
         if (!array_key_exists('admin', $_SESSION)) {
             $_SESSION['admin'] = false;
@@ -54,7 +61,7 @@ class AdminController
     }
 
     /**
-     * @return \Core\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getAdminOutput(): JsonResponse
     {
@@ -63,7 +70,7 @@ class AdminController
     }
 
     /**
-     * @return \Core\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getRequestAdmin(): JsonResponse
     {
