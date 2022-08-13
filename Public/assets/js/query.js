@@ -3,9 +3,9 @@ paginationStart()
 // Выводит на экран страницу 3 задачи на первой странице
 paginations()
 // Не помню что хотел сделать
-$('#outputAdmin1').on("click", function () {
-    window.location.reload()
-})
+// $('#outputAdmin1').on("click", function () {
+//     window.location.reload()
+// })
 // Выводит на экран нужную страницу при выборе
 $('ul').on("click", "#page", function (e) {
     e.preventDefault()
@@ -33,6 +33,133 @@ $('ul').on("click", "#page", function (e) {
         }
     })
 })
+
+// Выводит на экран нужную страницу при выборе (сортировка по Email)
+$('ul').on("click", "#pageEmail", function (e) {
+    e.preventDefault()
+    let page = $(this).attr('href')
+    let emailId = $(this).attr('data-id')
+    // console.log(emailId)
+    $.ajax({
+        url: '/paginationemailpage/get',
+        type: 'POST',
+        cache: false,
+        data: {'page': page, 'email': emailId},
+        dataType: 'json',
+        success: function (dataMes) {
+            console.log(dataMes)
+            var dataMesAdmin = ''
+            dataMesAdmin = dataMes[0]
+            dataMesAdmin = dataMesAdmin.admin
+            dataMes = dataMes[0]
+            delete dataMes.admin
+            dataMes = Object.values(dataMes)
+            var dataMessage = ''
+            if (dataMesAdmin === false) {
+                dataMessage = users(dataMes)
+            } else {
+                dataMessage = admin(dataMes)
+            }
+            $('#task').html(dataMessage)
+        }
+    })
+})
+
+// Выводит на экран нужную страницу при выборе (сортировка по пользователя)
+$('ul').on("click", "#pageUser", function (e) {
+    e.preventDefault()
+    let page = $(this).attr('href')
+    let userId = $(this).attr('data-id')
+    // console.log(emailId)
+    $.ajax({
+        url: '/paginationuserpage/get',
+        type: 'POST',
+        cache: false,
+        data: {'page': page, 'userId': userId},
+        dataType: 'json',
+        success: function (dataMes) {
+            console.log(dataMes)
+            var dataMesAdmin = ''
+            dataMesAdmin = dataMes[0]
+            dataMesAdmin = dataMesAdmin.admin
+            dataMes = dataMes[0]
+            delete dataMes.admin
+            dataMes = Object.values(dataMes)
+            var dataMessage = ''
+            if (dataMesAdmin === false) {
+                dataMessage = users(dataMes)
+            } else {
+                dataMessage = admin(dataMes)
+            }
+            $('#task').html(dataMessage)
+        }
+    })
+})
+
+// Выводит на экран нужную страницу при выборе (сортировка по выполненным задачам)
+$('ul').on("click", "#pageStatusFinished", function (e) {
+    e.preventDefault()
+    let page = $(this).attr('href')
+    // let status = $(this).attr('data-id')
+    // console.log(emailId)
+    $.ajax({
+        url: '/paginationstatusfinishedpage/get',
+        type: 'POST',
+        cache: false,
+        data: {'page': page},
+        dataType: 'json',
+        success: function (dataMes) {
+            console.log(dataMes)
+            var dataMesAdmin = ''
+            dataMesAdmin = dataMes[0]
+            dataMesAdmin = dataMesAdmin.admin
+            dataMes = dataMes[0]
+            delete dataMes.count
+            delete dataMes.admin
+            dataMes = Object.values(dataMes)
+            var dataMessage = ''
+            if (dataMesAdmin === false) {
+                dataMessage = users(dataMes)
+            } else {
+                dataMessage = admin(dataMes)
+            }
+            $('#task').html(dataMessage)
+        }
+    })
+})
+
+// Выводит на экран нужную страницу при выборе (сортировка по невыполненным задачам)
+$('ul').on("click", "#npageStatusNonFinished", function (e) {
+    e.preventDefault()
+    let page = $(this).attr('href')
+    // let status = $(this).attr('data-id')
+    // console.log(emailId)
+    $.ajax({
+        url: '/paginationstatusnonfinishedpage/get',
+        type: 'POST',
+        cache: false,
+        data: {'page': page},
+        dataType: 'json',
+        success: function (dataMes) {
+            console.log(dataMes)
+            var dataMesAdmin = ''
+            dataMesAdmin = dataMes[0]
+            dataMesAdmin = dataMesAdmin.admin
+            dataMes = dataMes[0]
+            delete dataMes.count
+            delete dataMes.admin
+            dataMes = Object.values(dataMes)
+            var dataMessage = ''
+            if (dataMesAdmin === false) {
+                dataMessage = users(dataMes)
+            } else {
+                dataMessage = admin(dataMes)
+            }
+            $('#task').html(dataMessage)
+        }
+    })
+})
+
 //Вывод на экран задачи для пользователя или для админа
 $("#addTask").on("click", function () {
     $.ajax({
@@ -47,8 +174,6 @@ $("#addTask").on("click", function () {
                 taskShowUser()
             }
         }
-
-
     })
 })
 
@@ -71,12 +196,9 @@ function taskShowUser() {
     $('#emailSet').val('')
     $('#taskSet').val('')
     $('#send').empty().html('<button id="sendTask" class="btn btn-primary" type="button">Создать задачу</button>' +
-        '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>'+
+        '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>' +
         '<input class="ms-4" type="checkbox" id="checkbox"> Статус задачи'
     )
-
-
-
 }
 
 // Выводит на экран форму для сортировки по имени пользователя
@@ -99,12 +221,12 @@ $("#send").on("click", "#sendTask", function () {
     var userSet = $("#nameSet").val()
     var emailSet = $("#emailSet").val()
     var taskSet = $("#taskSet").val()
-    if ($("#checkbox").is(":checked")){
+    if ($("#checkbox").is(":checked")) {
         status = 'finished'
-    }else{
+    } else {
         status = 'nonFinished'
     }
-    if (!isNaneValidate(nameSet)) {
+    if (!isNaneValidate(userSet)) {
         $('#nameSet').removeClass('form-control').addClass('form-control is-invalid')
         $('#errorName').html('Имя введено некорректно!')
         return
@@ -139,7 +261,6 @@ $("#send").on("click", "#sendTask", function () {
                 $('#success').html(data['success']).show('fast')
             }
         }
-
     })
 })
 
@@ -176,7 +297,6 @@ $("#sendAdmin").on("click", function () {
                 $('#success').html(data['success']).show('fast')
             }
         }
-
     })
 })
 
@@ -195,11 +315,10 @@ $("#sendUserSort").on("click", function () {
 
 // Сортировка про Email
 $("#sendEmailSorts").on("click", function () {
-    console.log('4fef')
     var email = $("#formEmailSortCheck").val()
     if (!isEmailValidate(email)) {
         $('#formEmailSortCheck').removeClass('form-control').addClass('form-control is-invalid')
-        $('#formUserEmailErrorLogin').html('Login введен некорректно!')
+        $('#formUserSortEmailLogin').html('Email введен некорректно!')
         return
     } else {
         $('#formEmailSortErrorLogin').removeClass('form-control is-invalid').addClass('form-control')
@@ -228,7 +347,6 @@ $("#outputAdmin").on("click", function () {
             $('.page-item').hide()
             paginationStart()
             paginations()
-            console.log(data)
         }
 
     })
@@ -236,7 +354,6 @@ $("#outputAdmin").on("click", function () {
 
 // Возвращает html задачи для всех пользователей
 function users(data) {
-    console.log(data)
     var dataMessage = ''
     for (var v of data) {
         var status = ''
@@ -265,8 +382,7 @@ function users(data) {
             v.task_id +
             '</span>' +
             '</span>' +
-            status+
-            '<h6>Дата:&nbsp;</h6>' +
+            status +
             '<h6><strong>Имя: </strong>' + v.name + '</h6>' +
             '<h6><strong>Email: </strong>' + v.address + '</h6>' +
             '<h6><strong>Задача: </strong>' + v.text + '</h6>' +
@@ -274,13 +390,11 @@ function users(data) {
             '</div>' +
             '</div>'
     }
-    console.log(dataMessage)
     return dataMessage
 }
 
 // Возвращает html задачи для admin
 function admin(data) {
-    console.log(data)
     dataMessage = ''
     for (var v of data) {
         var status = ''
@@ -309,9 +423,8 @@ function admin(data) {
             v.task_id +
             '</span>' +
             '</span>' +
-            '<button data-id="' + v.task_id + '" class="badge rounded-pill bg-primary mb-2 js-edit-task-button ms-4" type="button">' + v.task_id + ' Изменить задачу</button>' +
+            '<button data-id="' + v.task_id + '" class="badge rounded-pill bg-primary mb-2 js-edit-task-button ms-4" type="button"> Изменить задачу</button>' +
             status +
-            '<h6>Дата:&nbsp;</h6>' +
             '<h6><strong>Имя: </strong>' + v.name + '</h6>' +
             '<h6><strong>Email: </strong>' + v.address + '</h6>' +
             '<h6><strong>Задача: </strong>' + v.text + '</h6>' +
@@ -358,25 +471,27 @@ function paginationsUsers($user) {
         data: {'page': 1, 'user': $user},
         dataType: 'json',
         success: function (data) {
-            console.log(data)
             var countPage = ''
             countPage = data[0]
             countPage = countPage.count
             var dataUser = ''
             dataUser = data[0]
             dataUser = dataUser.admin
+            var userId = ''
+            userId = data[0]
+            userId = userId[0]
+            userId = userId.users_id
             data = data[0]
             delete data.count
             delete data.admin
             data = Object.values(data)
-            console.log(countPage)
             var countP = Math.ceil(countPage / 3)
             var paginations = ''
             let i = 1;
             while (i <= countP) {
                 paginations +=
                     '<li class="page-item">' +
-                    '<a id="page" class="page-link" href=' + i + '>' +
+                    '<a id="pageUser" data-id="'+userId+'" class="page-link" href=' + i + '>' +
                     i +
                     '</a>' +
                     '</li>'
@@ -410,6 +525,7 @@ function paginationsComleteTask() {
             var countPage = ''
             countPage = data[0]
             countPage = countPage.count
+            console.log(countPage)
             var dataUser = ''
             dataUser = data[0]
             dataUser = dataUser.admin
@@ -417,14 +533,14 @@ function paginationsComleteTask() {
             delete data.count
             delete data.admin
             data = Object.values(data)
-            console.log(countPage)
             var countP = Math.ceil(countPage / 3)
+            console.log(countP)
             var paginations = ''
             let i = 1;
             while (i <= countP) {
                 paginations +=
                     '<li class="page-item">' +
-                    '<a id="page" class="page-link" href=' + i + '>' +
+                    '<a id="pageStatusFinished" class="page-link" href=' + i + '>' +
                     i +
                     '</a>' +
                     '</li>'
@@ -454,7 +570,6 @@ function paginationsNotComleteTask() {
         data: {'page': 1},
         dataType: 'json',
         success: function (data) {
-            console.log(data)
             var countPage = ''
             countPage = data[0]
             countPage = countPage.count
@@ -465,14 +580,13 @@ function paginationsNotComleteTask() {
             delete data.count
             delete data.admin
             data = Object.values(data)
-            console.log(countPage)
             var countP = Math.ceil(countPage / 3)
             var paginations = ''
             let i = 1;
             while (i <= countP) {
                 paginations +=
                     '<li class="page-item">' +
-                    '<a id="page" class="page-link" href=' + i + '>' +
+                    '<a id="npageStatusNonFinished" class="page-link" href=' + i + '>' +
                     i +
                     '</a>' +
                     '</li>'
@@ -509,18 +623,22 @@ function paginationsEmail($email) {
             var dataEmail = ''
             dataEmail = data[0]
             dataEmail = dataEmail.email
+            var emailId = ''
+            emailId = data[0]
+            emailId = emailId[0]
+            emailId = emailId.email_id
+            console.log(emailId)
             data = data[0]
             delete data.count
             delete data.admin
             data = Object.values(data)
-            console.log(countPage)
             var countP = Math.ceil(countPage / 3)
             var paginations = ''
             let i = 1;
             while (i <= countP) {
                 paginations +=
                     '<li class="page-item">' +
-                    '<a id="page" class="page-link" href=' + i + '>' +
+                    '<a id="pageEmail" data-id="'+emailId+'" class="page-link" href=' + i + '>' +
                     i +
                     '</a>' +
                     '</li>'
@@ -541,10 +659,10 @@ function paginationsEmail($email) {
     })
 }
 
-// Выводит на экран общее кол-во страниц + (admin (true, false) просто в массиве не выводится)
+// Выводит на экран общее кол-во страниц
 function paginationStart() {
     $.ajax({
-        url: '/paginationCount/get',
+        url: '/paginationcount/get',
         type: 'POST',
         cache: false,
         dataType: 'json',
@@ -566,54 +684,6 @@ function paginationStart() {
             $('#pagination').after(paginations)
         }
     })
-}
-
-// Выводит на экран общее кол-во страниц + (admin (true, false) просто в массиве не выводится)
-function paginationStartUsers() {
-    $.ajax({
-        url: '/paginationcountusers/get',
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        success: function (data) {
-            console.log(data)
-            dateName = data[0]
-            var dataPag = data[0];
-            var countPage = Math.ceil(dataPag[0] / 3)
-            var paginations = ''
-            let i = 1;
-            while (i <= countPage) {
-                paginations +=
-                    '<li class="page-item">' +
-                    '<a id="page" class="page-link" href=' + i + '>' +
-                    i +
-                    '</a>' +
-                    '</li>'
-                i++
-            }
-            $('#pagination').after(paginations)
-        }
-    })
-}
-
-// Возвращает значение admin (true, false)
-function requestAdmin() {
-    $.ajax({
-        url: '/requestAdmin/get',
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        success: function (data) {
-            console.log(data)
-            var admin = ''
-            admin = data[0]
-            admin = admin.admin
-            console.log(admin)
-            admin = 'nur'
-return admin
-        }
-    })
-    return admin
 }
 
 // Получаем все поля и заполняем ими форму
@@ -626,17 +696,16 @@ $('#task').on('click', ':button', function () {
         data: {'task_id': taskId},
         dataType: 'json',
         success: function (data) {
-            console.log(data.task_id)
             $("#formTask").slideDown('fast');
             $('#nameSet').val(data.name)
             $('#emailSet').val(data.address)
             $('#taskSet').val(data.text)
-            $('#send').empty().html('<button id="changeTask" class="btn btn-primary" type="button" data-id="' + data.task_id+'&'+data.users_id +'&'+data.email_id+ '">Изменить задачу</button>' +
-                '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>'+
+            $('#send').empty().html('<button id="changeTask" class="btn btn-primary" type="button" data-id="' + data.task_id + '&' + data.users_id + '&' + data.email_id + '">Изменить задачу</button>' +
+                '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>' +
                 '<input class="ms-4" type="checkbox" id="checkbox"> Статус задачи')
-            if (data.status === 'nonFinished'){
+            if (data.status === 'nonFinished') {
                 $("#checkbox").prop('checked', false)
-            }else{
+            } else {
                 $("#checkbox").prop('checked', true)
             }
         }
@@ -650,12 +719,12 @@ $("#send").on("click", "#changeTask", function () {
     var emailSet = $("#emailSet").val()
     var taskSet = $("#taskSet").val()
     var id = $(this).attr('data-id')
-    if ($('#checkbox').is(':checked')){
+    if ($('#checkbox').is(':checked')) {
         status = 'finished'
-    }else{
+    } else {
         status = 'nonFinished'
     }
-    if (!isNaneValidate(nameSet)) {
+    if (!isNaneValidate(userSet)) {
         $('#nameSet').removeClass('form-control').addClass('form-control is-invalid')
         $('#errorName').html('Имя введено некорректно!')
         return
@@ -693,7 +762,6 @@ $("#send").on("click", "#changeTask", function () {
 
 
 $('#send').on('click', '#changeTask', function (e) {
-    console.log('привет')
     e.preventDefault()
 })
 
@@ -719,7 +787,3 @@ function isPasswordValidate(pass) {
     var regex = /[a-zA-Z0-9_.+-]{3,}/;
     return regex.test(pass);
 }
-
-
-
-
