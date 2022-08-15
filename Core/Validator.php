@@ -15,7 +15,6 @@ class Validator
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-
     /**
      * @param $name
      * @return bool
@@ -24,6 +23,11 @@ class Validator
     {
         $regexp = "/[A-Za-zА-Яа-яЁё]{2,}/";
         return preg_match($regexp, $name);
+    }
+
+    public function isValidStatus($status): bool
+    {
+       return $status === 'nonFinished' || $status === 'finished';
     }
 
 }

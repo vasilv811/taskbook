@@ -63,6 +63,14 @@
                 </div>
             </div>
             <div class="col py-3">
+                <div class="mt-2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="successAdminOutput" class="alert alert-success" style="display: none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <form id="formTask" class="row justify-content-md-center" style="display: none">
                     <div class="col-6">
                         <label for="validationServer01" class="form-label">Введите имя</label>

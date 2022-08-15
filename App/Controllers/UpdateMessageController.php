@@ -37,12 +37,13 @@ class UpdateMessageController
      */
     public function chengeMessage(Request $request): JsonResponse
     {
-        $postParam = $request->getPostParam();
-        $user = $postParam['user'] ?? null;
-        $email = $postParam['email'] ?? null;
-        $message = $postParam['task'] ?? null;
-        $status = $postParam['status'] ?? null;
-        $id = $postParam['id'] ?? null;
+        $post = $request->getPostParam();
+        $user = $post['user'] ?? null;
+        $email = $post['email'] ?? null;
+        $message = $post['task'] ?? null;
+        $status = ($this->validator->isValidStatus($post['status'])) ? $post['status'] : null;
+//        $status = $post['status'] ?? null;
+        $id = $post['id'] ?? null;
         $id = explode('&', $id);
         $id = ['task_id' => $id[0], 'users_id' => $id[1], 'email_id' => $id[2]];
         if (!$this->validator->isValidName($user)) {

@@ -259,6 +259,7 @@ $("#send").on("click", "#sendTask", function () {
             paginations()
             if (data['success']) {
                 $('#success').html(data['success']).show('fast')
+                setTimeout(function() {$('#success').html(data.success).hide('fast');}, 3000)
             }
         }
     })
@@ -348,6 +349,10 @@ $("#outputAdmin").on("click", function () {
             $('.page-item').hide()
             paginationStart()
             paginations()
+            if (data.success) {
+                $('#successAdminOutput').html(data.success).show('fast')
+                setTimeout(function() {$('#successAdminOutput').html(data.success).hide('fast');}, 3000)
+            }
         }
 
     })

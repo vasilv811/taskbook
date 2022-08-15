@@ -4,7 +4,9 @@
 namespace App\Controllers;
 
 
+use App\Models\Emails;
 use App\Models\Tasks;
+use App\Models\Users;
 use Core\Http\JsonResponse;
 use Core\Http\Request;
 use Core\Validator;
@@ -19,6 +21,8 @@ class SetMessageController
      * @var Validator
      */
     private Validator $validator;
+    private Users $users;
+    private Emails $emails;
 
     /**
      * SetMessageController constructor.
@@ -27,10 +31,14 @@ class SetMessageController
      */
     public function __construct(
         Tasks $tasks,
+        Users $users,
+        Emails $emails,
         Validator $validator
     ) {
         $this->tasks = $tasks;
         $this->validator = $validator;
+        $this->users = $users;
+        $this->emails = $emails;
     }
 
     /**
@@ -54,16 +62,16 @@ class SetMessageController
             return new JsonResponse(['error' => 'Напишите задачу']);
         }
         $this->tasks->createMessage($message, $status);
-        $userArr = $this->tasks->getUserByUsers($user);
+        $userArr = $this->users->getUserByUsers($user);
         if (!$userArr) {
-            $this->tasks->createUser($user);
-            $userArr = $this->tasks->getUserByUsers($user);
+            $this->users->createUser($user);
+            $userArr = $this->users->getUserByUsers($user);
         }
         $this->tasks->createUserIdByTasks($userArr['name_id']);
-        $emailArr = $this->tasks->getEmailByEmails($email);
+        $emailArr = $this->emails->getEmailByEmails($email);
         if (!$emailArr) {
-            $this->tasks->createEmail($email);
-            $emailArr = $this->tasks->getEmailByEmails($email);
+            $this->emails->createEmail($email);
+            $emailArr = $this->emails->getEmailByEmails($email);
         }
         $this->tasks->createEmailTask($emailArr['email_id']);
         return new JsonResponse(['success' => 'Задача добавлена']);

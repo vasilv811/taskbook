@@ -21,27 +21,7 @@ class Tasks
         $query->execute(['text' => $message, 'status' => $status]);
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function getUserByUsers(string $name): mixed
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
-        $query->execute(['name' => $name]);
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
 
-    /**
-     * @param string $name
-     */
-    public function createUser(string $name)
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("INSERT users (name) VALUES (:name)");
-        $query->execute(['name' => $name]);
-    }
 
     /**
      * @param int $user_id
@@ -53,17 +33,7 @@ class Tasks
         $query->execute(['user_id' => $user_id]);
     }
 
-    /**
-     * @param string $email
-     * @return mixed
-     */
-    public function getEmailByEmails(string $email): mixed
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
-        $query->execute(['email' => $email]);
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
+
 
 //    /**
 //     * @param string $name
@@ -89,15 +59,7 @@ class Tasks
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @param string $email
-     */
-    public function createEmail(string $email)
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("INSERT emails (address) VALUES (:email)");
-        $query->execute(['email' => $email]);
-    }
+
 
     /**
      * @param int $email_id
@@ -528,7 +490,7 @@ WHERE tasks.users_id = $userId
      * @param int $id
      * @return mixed
      */
-    public function getMessageByTaskId(int $id): mixed
+    public function getTasksByTasksId(int $id): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare(

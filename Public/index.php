@@ -8,6 +8,9 @@ use Core\Core;
 use Core\Renderer;
 use App\Controllers\SetMessageController;
 use App\Models\Tasks;
+use App\Models\Users;
+use App\Models\Emails;
+use App\Models\Admins;
 use Core\Validator;
 use App\Controllers\GetMessageController;
 use App\Controllers\PaginationController;
@@ -19,6 +22,9 @@ require dirname(__DIR__) . '/Config/libs.php';
 session_start();
 $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
 $tasks = new Tasks();
+$users = new Users();
+$emails = new Emails();
+$admins = new Admins();
 $validator = new Validator();
 
 $request = new Request(
@@ -41,7 +47,7 @@ $setMessage = new Route (
     Request::METHOD_POST,
     '/message/set',
     [
-        new SetMessageController($tasks, $validator),
+        new SetMessageController($tasks, $users, $emails, $validator),
         'setMessage',
     ]
 );
@@ -100,15 +106,6 @@ $adminOutput = new Route(
     ]
 );
 
-$getRequestAdmin = new Route(
-    Request::METHOD_POST,
-    '/requestadmin/get',
-    [
-        new AdminController($tasks),
-        'getRequestAdmin',
-    ]
-);
-
 $getMessageByTaskId = new Route(
     Request::METHOD_POST,
     '/mesagebytaskid/get',
@@ -134,15 +131,6 @@ $changeMessage = new Route(
     [
         new UpdateMessageController($tasks, $validator),
         'chengeMessage',
-    ]
-);
-
-$userSort = new Route(
-    Request::METHOD_POST,
-    '/usersort/get',
-    [
-        new GetMessageController($tasks),
-        'getMessageBySortUser',
     ]
 );
 
@@ -212,16 +200,13 @@ $paginationTaskNotComplete = new Route(
 $router = new Router();
 $router->addRoute($mainRoute);
 $router->addRoute($setMessage);
-$router->addRoute($getMessage);
 $router->addRoute($getCountPagination);
 $router->addRoute($getPagination);
 $router->addRoute($adminCheck);
 $router->addRoute($adminOutput);
-$router->addRoute($getRequestAdmin);
 $router->addRoute($getMessageByTaskId);
 $router->addRoute($adminStatus);
 $router->addRoute($changeMessage);
-$router->addRoute($userSort);
 $router->addRoute($paginationUser);
 $router->addRoute($getStartPaginationUsers);
 $router->addRoute($paginationEmail);

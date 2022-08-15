@@ -63,14 +63,6 @@ class AdminController
     public function getAdminOutput(): JsonResponse
     {
         $_SESSION['admin'] = false;
-        return new JsonResponse(['admin' => $_SESSION['admin']]);
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function getRequestAdmin(): JsonResponse
-    {
-        return new JsonResponse([$_SESSION]);
+        return new JsonResponse(['success' => 'Вы вышли из аккаунта администратора']);
     }
 }
