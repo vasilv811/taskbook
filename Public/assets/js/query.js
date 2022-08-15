@@ -754,7 +754,7 @@ $("#send").on("click", "#changeTask", function () {
         url: '/chengemessage/set',
         type: 'POST',
         cache: false,
-        data: {'email': emailSet, 'user': userSet, 'task': taskSet, 'status': status, 'id': id},
+        data: {'email': emailSet, 'user': userSet, 'text': taskSet, 'status': status, 'id': id},
         dataType: 'json',
         success: function (data) {
             console.log(data)

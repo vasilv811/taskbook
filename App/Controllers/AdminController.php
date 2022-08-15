@@ -4,7 +4,7 @@
 namespace App\Controllers;
 
 
-use App\Models\Tasks;
+use App\Models\Admins;
 use Core\Http\Request;
 use Core\Http\JsonResponse;
 
@@ -12,18 +12,17 @@ class AdminController
 {
 
     /**
-     * @var Tasks
+     * @var Admins
      */
-    private Tasks $tasks;
-
+    private Admins $admins;
 
     /**
      * AdminController constructor.
-     * @param Tasks $tasks
+     * @param Admins $admins
      */
-    public function __construct(Tasks $tasks)
+    public function __construct(Admins $admins)
     {
-        $this->tasks = $tasks;
+        $this->admins = $admins;
     }
 
 
@@ -36,7 +35,7 @@ class AdminController
         $post = $request->getPostParam();
         $login = (string)$post['login'];
         $password = md5(md5($post['password'] . '@$%fdep35'));
-        $admins = $this->tasks->getAdmins($login, $password);
+        $admins = $this->admins->getAdmins($login, $password);
         $success = ['success' => ($admins === true) ? 'Вы вошли как администратор' : 'Вы ввели неверный логин или пароль'];
         if (!$_SESSION['admin']) {
             $_SESSION['admin'] = $admins;

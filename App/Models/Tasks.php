@@ -9,7 +9,6 @@ use Core\Db;
 class Tasks
 {
 
-
     /**
      * @param $message
      * @param $status
@@ -21,8 +20,6 @@ class Tasks
         $query->execute(['text' => $message, 'status' => $status]);
     }
 
-
-
     /**
      * @param int $user_id
      */
@@ -32,20 +29,6 @@ class Tasks
         $query = $db->prepare("UPDATE tasks SET users_id = :user_id ORDER BY task_id DESC LIMIT 1");
         $query->execute(['user_id' => $user_id]);
     }
-
-
-
-//    /**
-//     * @param string $name
-//     * @return mixed
-//     */
-//    public function getUserIdByUsers(string $name): mixed
-//    {
-//        $db = Db::getDb();
-//        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
-//        $query->execute(['name' => $name]);
-//        return $query->fetch(\PDO::FETCH_ASSOC);
-//    }
 
     /**
      * @param int $user_id
@@ -58,8 +41,6 @@ class Tasks
         $query->execute(['user_id' => $user_id]);
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
-
-
 
     /**
      * @param int $email_id
@@ -216,7 +197,6 @@ class Tasks
         );
         return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
-
 
     /**
      * @param int $limit
@@ -463,30 +443,6 @@ WHERE tasks.users_id = $userId
     }
 
     /**
-     * @param mixed $name
-     * @return array
-     */
-    public function getNameIdByName(mixed $name): array
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
-        $query->execute(['name' => $name]);
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @param mixed $email
-     * @return array
-     */
-    public function getEmailIdByEmails(mixed $email): array
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
-        $query->execute(['email' => $email]);
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    /**
      * @param int $id
      * @return mixed
      */
@@ -521,53 +477,11 @@ WHERE tasks.users_id = $userId
      * @param int $id
      * @return mixed
      */
-    public function updateMessageText(mixed $text, string $status, int $id): mixed
+    public function updateText(mixed $text, string $status, int $id): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE tasks SET text = :text, status = :status WHERE task_id = $id");
         $query->execute(['text' => $text, 'status' => $status]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
-
-    /**
-     * @param mixed $user
-     * @param int $id
-     * @return mixed
-     */
-    public function updateMessageUser(mixed $user, int $id): mixed
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("UPDATE users SET name = :name WHERE name_id = $id");
-        $query->execute(['name' => $user]);
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @param mixed $email
-     * @param int $id
-     * @return mixed
-     */
-    public function updateMessageEmail(mixed $email, int $id): mixed
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("UPDATE emails SET address = :address WHERE email_id = $id");
-        $query->execute(['address' => $email]);
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
-
-
-    /**
-     * @param string $login
-     * @param $password
-     * @return bool
-     */
-    public function getAdmins(string $login, $password):bool
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM admins WHERE login = :login AND password = :password");
-        $query->execute(['login'=>$login, 'password'=>$password]);
-        return (bool)$query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-
 }

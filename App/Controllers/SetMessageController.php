@@ -21,12 +21,20 @@ class SetMessageController
      * @var Validator
      */
     private Validator $validator;
+    /**
+     * @var Users
+     */
     private Users $users;
+    /**
+     * @var Emails
+     */
     private Emails $emails;
 
     /**
      * SetMessageController constructor.
      * @param Tasks $tasks
+     * @param Users $users
+     * @param Emails $emails
      * @param Validator $validator
      */
     public function __construct(
