@@ -57,29 +57,29 @@ class SetMessageController
     {
         $postParam = $request->getPostParam();
         $user = $postParam['user'] ?? null;
-        $email = $postParam['email'] ?? null;
+        $address = $postParam['email'] ?? null;
         $message = $postParam['task'] ?? null;
         $status = $postParam['status'] ?? null;
         if (!$this->validator->isValidName($user)) {
             return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
         }
-        if (!$this->validator->isValidEmail($email)) {
+        if (!$this->validator->isValidEmail($address)) {
             return new JsonResponse(['error' => 'Email введен некорректно']);
         }
         if ($message === null) {
             return new JsonResponse(['error' => 'Напишите задачу']);
         }
-        $this->tasks->createMessage($message, $status);
-        $userArr = $this->users->getUserByUsers($user);
+        $this->tasks->createTask($message, $status);
+        $userArr = $this->users->getUserByName($user);
         if (!$userArr) {
             $this->users->createUser($user);
-            $userArr = $this->users->getUserByUsers($user);
+            $userArr = $this->users->getUserByName($user);
         }
-        $this->tasks->createUserIdByTasks($userArr['name_id']);
-        $emailArr = $this->emails->getEmailByEmails($email);
+        $this->tasks->updateTasksByUserId($userArr['name_id']);
+        $emailArr = $this->emails->getEmailByAddress($address);
         if (!$emailArr) {
-            $this->emails->createEmail($email);
-            $emailArr = $this->emails->getEmailByEmails($email);
+            $this->emails->createEmail($address);
+            $emailArr = $this->emails->getEmailByAddress($address);
         }
         $this->tasks->createEmailTask($emailArr['email_id']);
         return new JsonResponse(['success' => 'Задача добавлена']);

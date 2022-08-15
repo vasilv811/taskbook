@@ -12,7 +12,7 @@ class Users
      * @param string $name
      * @return mixed
      */
-    public function getUserByUsers(string $name): mixed
+    public function getUserByName(string $name): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare("SELECT * FROM users WHERE name = :name");

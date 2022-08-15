@@ -12,11 +12,11 @@ class Emails
      * @param string $email
      * @return mixed
      */
-    public function getEmailByEmails(string $email): mixed
+    public function getEmailByAddress(string $address): mixed
     {
         $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
-        $query->execute(['email' => $email]);
+        $query = $db->prepare("SELECT * FROM emails WHERE address = :address");
+        $query->execute(['address' => $address]);
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 

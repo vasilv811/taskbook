@@ -13,7 +13,7 @@ class Tasks
      * @param $message
      * @param $status
      */
-    public function createMessage($message, $status)
+    public function createTask($message, $status)
     {
         $db = Db::getDb();
         $query = $db->prepare("INSERT tasks (text, status) VALUES (:text, :status)");
@@ -23,7 +23,7 @@ class Tasks
     /**
      * @param int $user_id
      */
-    public function createUserIdByTasks(int $user_id)
+    public function updateTasksByUserId(int $user_id)
     {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE tasks SET users_id = :user_id ORDER BY task_id DESC LIMIT 1");
