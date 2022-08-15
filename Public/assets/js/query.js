@@ -289,12 +289,13 @@ $("#sendAdmin").on("click", function () {
         data: {'login': loginCheck, 'password': passwordCheck},
         dataType: 'json',
         success: function (data) {
+            console.log(data)
             $('.page-item').hide()
             paginationStart()
             paginations()
-            if (data['success']) {
-
-                $('#success').html(data['success']).show('fast')
+            if (data.success) {
+                $('#successAdmin').html(data.success).show('fast')
+                setTimeout(function() {$('#successAdmin').html(data.success).hide('fast');}, 3000)
             }
         }
     })

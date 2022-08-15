@@ -31,20 +31,17 @@ class AdminController
      * @param Request $request
      * @return JsonResponse
      */
-    public function getAdminCheck(Request $request): JsonResponse
+    public function getAdmins(Request $request): JsonResponse
     {
-        $admin = '';
         $post = $request->getPostParam();
-        $validAdmin = $this->tasks->getAdminCheck();
-        foreach ($validAdmin as $item) {
-            if ($item['login'] === $post['login'] && $item['password'] === $post['password']) {
-                $admin = true;
-            } else {
-                $admin = false;
-            }
+        $login = (string)$post['login'];
+        $password = md5(md5($post['password'] . '@$%fdep35'));
+        $admins = $this->tasks->getAdmins($login, $password);
+        $success = ['success' => ($admins === true) ? 'Вы вошли как администратор' : 'Вы ввели неверный логин или пароль'];
+        if (!$_SESSION['admin']) {
+            $_SESSION['admin'] = $admins;
         }
-        $_SESSION['admin'] = $admin;
-        return new JsonResponse($_SESSION);
+        return new JsonResponse($success);
     }
 
 
@@ -66,7 +63,7 @@ class AdminController
     public function getAdminOutput(): JsonResponse
     {
         $_SESSION['admin'] = false;
-        return new JsonResponse($_SESSION);
+        return new JsonResponse(['admin' => $_SESSION['admin']]);
     }
 
     /**

@@ -65,17 +65,17 @@ class Tasks
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function getUserIdByUsers(string $name): mixed
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
-        $query->execute(['name' => $name]);
-        return $query->fetch(\PDO::FETCH_ASSOC);
-    }
+//    /**
+//     * @param string $name
+//     * @return mixed
+//     */
+//    public function getUserIdByUsers(string $name): mixed
+//    {
+//        $db = Db::getDb();
+//        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
+//        $query->execute(['name' => $name]);
+//        return $query->fetch(\PDO::FETCH_ASSOC);
+//    }
 
     /**
      * @param int $user_id
@@ -112,7 +112,7 @@ class Tasks
     /**
      * @return array
      */
-    public function getAllByMessage(): array
+    public function getUserIdByUsers(string $name): array
     {
         $db = Db::getDb();
         $query = $db->query(
@@ -528,7 +528,7 @@ WHERE tasks.users_id = $userId
      * @param int $id
      * @return mixed
      */
-    public function getByMessageTaskId(int $id): mixed
+    public function getMessageByTaskId(int $id): mixed
     {
         $db = Db::getDb();
         $query = $db->prepare(
@@ -593,14 +593,18 @@ WHERE tasks.users_id = $userId
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
+
     /**
-     * @return array
+     * @param string $login
+     * @param $password
+     * @return bool
      */
-    public function getAdminCheck(): array
+    public function getAdmins(string $login, $password):bool
     {
         $db = Db::getDb();
-        $query = $db->query("SELECT * FROM admins");
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
+        $query = $db->prepare("SELECT * FROM admins WHERE login = :login AND password = :password");
+        $query->execute(['login'=>$login, 'password'=>$password]);
+        return (bool)$query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 

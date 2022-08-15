@@ -46,15 +46,6 @@ $setMessage = new Route (
     ]
 );
 
-$getMessage = new Route (
-    Request::METHOD_POST,
-    '/message/get',
-    [
-        new GetMessageController($tasks),
-        'getAllMessage',
-    ]
-);
-
 $getCountPagination = new Route (
     Request::METHOD_POST,
     '/paginationcount/get',
@@ -96,7 +87,7 @@ $adminCheck = new Route(
     '/admin/check',
     [
         new AdminController($tasks),
-        'getAdminCheck',
+        'getAdmins',
     ]
 );
 

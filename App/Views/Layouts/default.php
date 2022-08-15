@@ -113,7 +113,7 @@
                     <div class="mt-2">
                         <div class="row">
                             <div class="col-md-12">
-                                <div id="success" class="alert alert-success" style="display: none">
+                                <div id="successAdmin" class="alert alert-success" style="display: none">
                                 </div>
                             </div>
                         </div>
