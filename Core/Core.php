@@ -13,9 +13,9 @@ class Core
     private Router $router;
 
     public function __construct(Router $router)
-{
-    $this->router = $router;
-}
+    {
+        $this->router = $router;
+    }
 
     public function handleHttpRequest(Request $request): Response
     {

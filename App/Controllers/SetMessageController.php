@@ -81,7 +81,7 @@ class SetMessageController
             $this->emails->createEmail($address);
             $emailArr = $this->emails->getEmailByAddress($address);
         }
-        $this->tasks->createEmailTask($emailArr['email_id']);
+        $this->tasks->updateTasksByEmailId($emailArr['email_id']);
         return new JsonResponse(['success' => 'Задача добавлена']);
     }
 }

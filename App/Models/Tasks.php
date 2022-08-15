@@ -45,7 +45,7 @@ class Tasks
     /**
      * @param int $email_id
      */
-    public function createEmailTask(int $email_id)
+    public function updateTasksByEmailId(int $email_id)
     {
         $db = Db::getDb();
         $query = $db->prepare("UPDATE tasks SET email_id = :email_id ORDER BY task_id DESC LIMIT 1");
@@ -86,7 +86,7 @@ class Tasks
     /**
      * @return array
      */
-    public function getAllUserByTask(): array
+    public function getCountByTask(): array
     {
         $db = Db::getDb();
         $query = $db->query(

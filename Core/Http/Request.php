@@ -36,27 +36,11 @@ public const METHOD_POST = 'POST';
     }
 
     /**
-     * @param array $getParam
-     */
-    public function setGetParam(array $getParam): void
-    {
-        $this->getParam = $getParam;
-    }
-
-    /**
      * @return array
      */
     public function getPostParam(): array
     {
         return $this->postParam;
-    }
-
-    /**
-     * @param array $postParam
-     */
-    public function setPostParam(array $postParam): void
-    {
-        $this->postParam = $postParam;
     }
 
     /**
@@ -68,26 +52,10 @@ public const METHOD_POST = 'POST';
     }
 
     /**
-     * @param string $path
-     */
-    public function setPath(string $path): void
-    {
-        $this->path = $path;
-    }
-
-    /**
      * @return string
      */
     public function getMethod(): string
     {
         return $this->method;
-    }
-
-    /**
-     * @param string $method
-     */
-    public function setMethod(string $method): void
-    {
-        $this->method = $method;
     }
 }

@@ -32,14 +32,6 @@ class Route
     }
 
     /**
-     * @param mixed $handler
-     */
-    public function setHandler(mixed $handler): void
-    {
-        $this->handler = $handler;
-    }
-
-    /**
      * @return string
      */
     public function getPath(): string
@@ -48,26 +40,10 @@ class Route
     }
 
     /**
-     * @param string $path
-     */
-    public function setPath(string $path): void
-    {
-        $this->path = $path;
-    }
-
-    /**
      * @return string
      */
     public function getMethod(): string
     {
         return $this->method;
-    }
-
-    /**
-     * @param string $method
-     */
-    public function setMethod(string $method): void
-    {
-        $this->method = $method;
     }
 }

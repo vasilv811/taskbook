@@ -44,7 +44,7 @@ class PaginationController
      */
     public function getAllTasks(): JsonResponse
     {
-        $getCountTask = $this->tasks->getAllUserByTask();
+        $getCountTask = $this->tasks->getCountByTask();
         return new JsonResponse([$getCountTask]);
     }
 

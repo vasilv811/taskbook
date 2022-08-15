@@ -18,7 +18,7 @@ use App\Controllers\AdminController;
 use App\Controllers\UpdateMessageController;
 
 
-require dirname(__DIR__) . '/Config/libs.php';
+require dirname(__DIR__) . '/Bootstrap/bootstrap.php';
 session_start();
 $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
 $tasks = new Tasks();
