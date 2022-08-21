@@ -53,7 +53,7 @@ class UpdateMessageController
      * @param Request $request
      * @return JsonResponse
      */
-    public function chengeMessage(Request $request): JsonResponse
+    public function changeMessage(Request $request): JsonResponse
     {
         $post = $request->getPostParam();
         $user = $post['user'] ?? null;

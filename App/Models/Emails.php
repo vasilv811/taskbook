@@ -9,7 +9,7 @@ use Core\Db;
 class Emails
 {
     /**
-     * @param string $email
+     * @param string $address
      * @return mixed
      */
     public function getEmailByAddress(string $address): mixed
@@ -41,18 +41,6 @@ class Emails
         $query = $db->prepare("UPDATE emails SET address = :address WHERE email_id = $id");
         $query->execute(['address' => $email]);
         return $query->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @param mixed $email
-     * @return array
-     */
-    public function getEmailIdByEmails(mixed $email): array
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM emails WHERE address = :email");
-        $query->execute(['email' => $email]);
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 }

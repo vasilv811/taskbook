@@ -197,6 +197,7 @@
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="/assets/js/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/jscrypt.js"></script>
+    <script src="/assets/js/addition.js"></script>
     <script src="/assets/js/query.js"></script>
 </body>
 

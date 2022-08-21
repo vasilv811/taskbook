@@ -43,16 +43,4 @@ class Users
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @param mixed $name
-     * @return array
-     */
-    public function getNameIdByName(mixed $name): array
-    {
-        $db = Db::getDb();
-        $query = $db->prepare("SELECT * FROM users WHERE name = :name");
-        $query->execute(['name' => $name]);
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
 }
