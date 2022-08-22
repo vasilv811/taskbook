@@ -9,11 +9,11 @@ function getPage(pageId, url, page, filter, name, emailAddress){
         dataType: 'json',
         success: function (data) {
             var countPage = ''
-            countPage = data[0]
-            countPage = countPage.count
+            countPage = data[0].count
+            // countPage = countPage.count
             var dataUser = ''
-            dataUser = data[0]
-            dataUser = dataUser.admin
+            dataUser = data[0].admin
+            // dataUser = dataUser.admin
             var filterUserEmail = ''
             filterUserEmail = data[0]
             filterUserEmail = filterUserEmail.filterUserEmail
@@ -25,12 +25,12 @@ function getPage(pageId, url, page, filter, name, emailAddress){
             data = Object.values(data)
             var dataId = ''
             if (filterUserEmail === 'user'){
-                dataId = data[0]
-                dataId = dataId.name
+                dataId = data[0].name
+                // dataId = dataId.name
             }
             if (filterUserEmail === 'email'){
-                dataId = data[0]
-                dataId = dataId.address
+                dataId = data[0].address
+                // dataId = dataId.address
             }
             var countP = Math.ceil(countPage / 3)
             var paginations = ''

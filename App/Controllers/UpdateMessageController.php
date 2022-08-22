@@ -55,9 +55,12 @@ class UpdateMessageController
      */
     public function changeMessage(Request $request): JsonResponse
     {
+        if ($_SESSION['admin'] === false){
+            return new JsonResponse(['error' => 'Вы не можете редактировать запись т.к. не являетесь администратором']);
+        }
         $post = $request->getPostParam();
-        $user = $post['user'] ?? null;
-        $email = $post['email'] ?? null;
+        $user = trim($post['user']) ?? null;
+        $email = trim($post['email']) ?? null;
         $text = $post['text'] ?? null;
         $status = ($this->validator->isValidStatus($post['status'])) ? $post['status'] : null;
         $id = $post['id'] ?? null;

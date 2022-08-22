@@ -56,10 +56,10 @@ class SetMessageController
     public function setMessage(Request $request): JsonResponse
     {
         $postParam = $request->getPostParam();
-        $user = $postParam['user'] ?? null;
-        $address = $postParam['email'] ?? null;
+        $user = trim($postParam['user']) ?? null;
+        $address = trim($postParam['email']) ?? null;
         $message = $postParam['task'] ?? null;
-        $status = $postParam['status'] ?? null;
+        $status = trim($postParam['status']) ?? null;
         if (!$this->validator->isValidName($user)) {
             return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
         }
