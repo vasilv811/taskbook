@@ -1,41 +1,40 @@
 // Выводит на экран общее кол-во страниц
 getPage('page', '/paginations/get', 1);
+
+queryAdmin()
+
 // Выводит на экран нужную страницу при выборе
 $('ul').on("click", "#page", function (e) {
     e.preventDefault()
     let page = $(this).attr('href')
     getPage('page', '/paginations/get', page)
 })
-
-// Выводит на экран нужную страницу при выборе (сортировка по Email)
-$('ul').on("click", "#pageEmail", function (e) {
+    // Выводит на экран нужную страницу при выборе (сортировка по Email)
+    .on("click", "#pageEmail", function (e) {
     e.preventDefault()
     let page = $(this).attr('href')
     let email = $(this).attr('data-id')
     getPage('pageUser', '/paginations/get', page, '', '', email)
-})
-
-// Выводит на экран нужную страницу при выборе (сортировка по пользователя)
-$('ul').on("click", "#pageUser", function (e) {
-    e.preventDefault()
-    let page = $(this).attr('href')
-    let user = $(this).attr('data-id')
-    getPage('pageUser', '/paginations/get', page, '', user)
-})
-
-// Выводит на экран нужную страницу при выборе (сортировка по выполненным задачам)
-$('ul').on("click", "#pageStatusFinished", function (e) {
-    e.preventDefault()
-    let page = $(this).attr('href')
-    getPage('pageStatusFinished','/paginations/get', page, 'completedTask')
-})
-
-// Выводит на экран нужную страницу при выборе (сортировка по невыполненным задачам)
-$('ul').on("click", "#npageStatusNonFinished", function (e) {
-    e.preventDefault()
-    let page = $(this).attr('href')
-    getPage('npageStatusNonFinished','/paginations/get', page, 'nonCompleteTask')
-})
+    })
+    // Выводит на экран нужную страницу при выборе (сортировка по пользователя)
+    .on("click", "#pageUser", function (e) {
+        e.preventDefault()
+        let page = $(this).attr('href')
+        let user = $(this).attr('data-id')
+        getPage('pageUser', '/paginations/get', page, '', user)
+    })
+    // Выводит на экран нужную страницу при выборе (сортировка по выполненным задачам)
+    .on("click", "#pageStatusFinished", function (e) {
+        e.preventDefault()
+        let page = $(this).attr('href')
+        getPage('pageStatusFinished','/paginations/get', page, 'completedTask')
+    })
+    // Выводит на экран нужную страницу при выборе (сортировка по невыполненным задачам)
+    .on("click", "#npageStatusNonFinished", function (e) {
+        e.preventDefault()
+        let page = $(this).attr('href')
+        getPage('npageStatusNonFinished','/paginations/get', page, 'nonCompleteTask')
+    })
 
 //Вывод на экран задачи для пользователя или для админа
 $("#addTask").on("click", function () {
@@ -61,31 +60,31 @@ function taskShowAdmin() {
     $('#emailSet').val('')
     $('#taskSet').val('')
     $('#send').empty().html('<button id="sendTask" class="btn btn-primary" type="button">Создать задачу</button>' +
-        '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>' +
-        '<input class="ms-4" type="checkbox" id="checkbox"> Статус задачи')
+        '<button id="closeTaskButton" class="btn btn-primary ml-4" type="button">Cкрыть форму</button>' +
+        '<input class="ml-4" type="checkbox" id="checkbox"> Статус задачи' + '<hr>')
 }
 
 // Выводит на экран форму для создания задачи для пользователя
 function taskShowUser() {
-
     $("#formTask").slideDown('fast');
     $('#nameSet').val('')
     $('#emailSet').val('')
     $('#taskSet').val('')
     $('#send').empty().html('<button id="sendTask" class="btn btn-primary" type="button">Создать задачу</button>' +
-        '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>'
-        // '<input class="ms-4" type="checkbox" id="checkbox"> Статус задачи'
+        '<button id="closeTaskButton" class="btn btn-primary ml-4" type="button">Cкрыть форму</button>' + '<hr>'
     )
 }
 
 // Выводит на экран форму для сортировки по имени пользователя
 $("#inputUserSort").on("click", function () {
     $("#formUserSort").slideToggle('fast')
+    $('#formEmailSort').hide()
 })
 
 // Выводит на экран форму для сортировки по Email
 $("#inputEmailSort").on("click", function () {
     $("#formEmailSort").slideToggle('fast')
+    $('#formUserSort').hide()
 })
 
 // Выводит на экран форму для входа администротора
@@ -139,6 +138,13 @@ $("#send").on("click", "#sendTask", function () {
         }
     })
 })
+    .on('click', '#changeTask', function (e) {
+        e.preventDefault()
+    })
+    .on('click', '#closeTaskButton', function () {
+        $('#formTask').slideUp('fast')
+    })
+
 
 // Отправляет значения формы администратора на сервер
 $("#sendAdmin").on("click", function () {
@@ -168,8 +174,10 @@ $("#sendAdmin").on("click", function () {
             $('.page-item').hide()
             getPage('page', '/paginations/get', 1);
             if (data.success) {
+                queryAdmin()
                 $('#successAdmin').html(data.success).show('fast')
                 setTimeout(function() {$('#successAdmin').html(data.success).hide('fast');}, 3000)
+                setTimeout(function() {$('#formAdmin').hide('fast');}, 3000)
             }
         }
     })
@@ -186,8 +194,6 @@ $("#sendUserSort").on("click", function () {
         $('#formUserSortErrorLogin').removeClass('form-control is-invalid').addClass('form-control')
     }
     getPage('pageUser', '/paginations/get', 1, '',user)
-
-    // paginationsUsers(user)
 })
 
 // Сортировка про Email
@@ -195,25 +201,22 @@ $("#sendEmailSorts").on("click", function () {
     var email = $("#formEmailSortCheck").val()
     if (!isEmailValidate(email)) {
         $('#formEmailSortCheck').removeClass('form-control').addClass('form-control is-invalid')
-        $('#formUserSortEmailLogin').html('Email введен некорректно!')
+        $('#formEmailSortErrorLogin').html('Email введен некорректно!')
         return
     } else {
         $('#formEmailSortErrorLogin').removeClass('form-control is-invalid').addClass('form-control')
     }
     getPage('pageEmail', '/paginations/get', 1, '','',email)
-    // paginationsEmail(email)
 })
 
 // Выводитт на экран выполненные задичи
 $("#inputCompletedTasks").on("click", function () {
     getPage('pageStatusFinished','/paginations/get',1, 'completedTask')
-    // paginationsComleteTask()
 })
 
 // Выводитт на экран не выполненные задичи
 $("#inputTasksNotCompleted").on("click", function () {
     getPage('npageStatusNonFinished','/paginations/get',1, 'nonCompletedTask')
-    // paginationsNotComleteTask()
 })
 
 // Выход из аккаунта admin
@@ -227,6 +230,7 @@ $("#outputAdmin").on("click", function () {
             $('.page-item').hide()
             getPage('page', '/paginations/get', 1);
             if (data.success) {
+                queryAdmin()
                 $('#successAdminOutput').html(data.success).show('fast')
                 setTimeout(function() {$('#successAdminOutput').html(data.success).hide('fast');}, 3000)
             }
@@ -235,10 +239,3 @@ $("#outputAdmin").on("click", function () {
     })
 })
 
-$('#send').on('click', '#changeTask', function (e) {
-    e.preventDefault()
-})
-
-$('#send').on('click', '#closeTaskButton', function () {
-    $('#formTask').slideUp('fast')
-})

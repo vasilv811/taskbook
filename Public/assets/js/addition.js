@@ -1,6 +1,8 @@
 //
-function getPage(pageId, url, page, filter, name, emailAddress){
-    if (page === undefined){page = 1}
+function getPage(pageId, url, page, filter, name, emailAddress) {
+    if (page === undefined) {
+        page = 1
+    }
     $.ajax({
         url: url,
         type: 'POST',
@@ -17,18 +19,20 @@ function getPage(pageId, url, page, filter, name, emailAddress){
             var filterUserEmail = ''
             filterUserEmail = data[0]
             filterUserEmail = filterUserEmail.filterUserEmail
-            if (filterUserEmail === undefined){filterUserEmail = ''}
+            if (filterUserEmail === undefined) {
+                filterUserEmail = ''
+            }
             data = data[0]
             delete data.count
             delete data.admin
             delete data.filterUserEmail
             data = Object.values(data)
             var dataId = ''
-            if (filterUserEmail === 'user'){
+            if (filterUserEmail === 'user') {
                 dataId = data[0].name
                 // dataId = dataId.name
             }
-            if (filterUserEmail === 'email'){
+            if (filterUserEmail === 'email') {
                 dataId = data[0].address
                 // dataId = dataId.address
             }
@@ -38,7 +42,7 @@ function getPage(pageId, url, page, filter, name, emailAddress){
             while (i <= countP) {
                 paginations +=
                     '<li class="page-item">' +
-                    '<a id="'+pageId+ '" data-id="'+dataId+'" class="page-link" href=' + i + '>' +
+                    '<a id="' + pageId + '" data-id="' + dataId + '" class="page-link" href=' + i + '>' +
                     i +
                     '</a>' +
                     '</li>'
@@ -73,8 +77,8 @@ $('#task').on('click', ':button', function () {
             $('#emailSet').val(data.address)
             $('#taskSet').val(data.text)
             $('#send').empty().html('<button id="changeTask" class="btn btn-primary" type="button" data-id="' + data.task_id + '&' + data.users_id + '&' + data.email_id + '">Изменить задачу</button>' +
-                '<button id="closeTaskButton" class="btn btn-primary ms-4" type="button">Cкрыть форму</button>' +
-                '<input class="ms-4" type="checkbox" id="checkbox"> Статус задачи')
+                '<button id="closeTaskButton" class="btn btn-primary ml-4" type="button">Cкрыть форму</button>' +
+                '<input class="ml-4" type="checkbox" id="checkbox"> Статус задачи' + '<hr>')
             if (data.status === 'nonFinished') {
                 $("#checkbox").prop('checked', false)
             } else {
@@ -125,6 +129,8 @@ $("#send").on("click", "#changeTask", function () {
         success: function (data) {
             if (data['success']) {
                 $('#success').html(data['success']).show('fast')
+                setTimeout(function() {$('#success').html(data.success).hide('fast');}, 3000)
+                setTimeout(function() {$('#success').html(data.success).hide('fast');}, 3000)
             }
         }
 
@@ -138,37 +144,37 @@ function users(data) {
         var status = ''
         if (v.status === "nonFinished") {
             status +=
-                '<span class="badge rounded-pill bg-primary mb-2 ms-4">' +
-                '<span style="font-weight: normal !important;">' +
-                'Задача не выполнена  ' +
-                '</span>' +
+                '<span style="color: rgba(232,12,12,0.53)">' +
+                'не выполнена' +
                 '</span>'
         } else {
             status +=
-                '<span class="badge rounded-pill bg-primary mb-2 ms-4">' +
-                '<span style="font-weight: normal !important;">' +
-                'Задача выполнена ' +
-                '</span>' +
+                '<span style="color: rgba(0,128,0,0.54)">' +
+                'выполнена' +
                 '</span>'
         }
         dataMessage +=
-            '<div class="mt-3 border rounded-2">' +
-            '<div class="col">' +
-            '<div class="p-4">' +
-            '<span class="badge rounded-pill bg-primary mb-2">' +
-            '<span style="font-weight: normal !important;">' +
+            '<div class="col-xl-4 col-md-6 mb-4">' +
+            '<div class="card shadow mb-4">' +
+            '<div class="card-header py-3">' +
+            '<h6 class="m-0 font-weight-bold text-primary">' +
             'Задача №  ' +
             v.task_id +
-            '</span>' +
-            '</span>' +
+            '   -   ' +
             status +
-            '<h6><strong>Имя: </strong>' + v.name + '</h6>' +
+            '</h6>' +
+            '<hr>' +
+            '<h6><strong>Автор: </strong>' + v.name + '</h6>' +
             '<h6><strong>Email: </strong>' + v.address + '</h6>' +
-            '<h6><strong>Задача: </strong>' + v.text + '</h6>' +
+            '</div>' +
+            '<div class="card-body">' +
+            '<p>' + v.text + '</p>' +
             '</div>' +
             '</div>' +
             '</div>'
     }
+    console
+    console.log(dataMessage)
     return dataMessage
 }
 
@@ -179,39 +185,62 @@ function admin(data) {
         var status = ''
         if (v.status === "nonFinished") {
             status +=
-                '<span class="badge rounded-pill bg-primary mb-2 ms-4">' +
-                '<span style="font-weight: normal !important;">' +
-                'Задача не выполнена  ' +
-                '</span>' +
+                '<span style="color: rgba(232,12,12,0.53)">' +
+                'не выполнена' +
                 '</span>'
         } else {
             status +=
-                '<span class="badge rounded-pill bg-primary mb-2 ms-4">' +
-                '<span style="font-weight: normal !important;">' +
-                'Задача выполнена ' +
-                '</span>' +
+                '<span style="color: rgba(0,128,0,0.54)">' +
+                'выполнена' +
                 '</span>'
         }
         dataMessage +=
-            '<div class="mt-3 border rounded-2">' +
-            '<div class="col">' +
-            '<div class="p-4">' +
-            '<span class="badge rounded-pill bg-primary mb-2">' +
-            '<span style="font-weight: normal !important;">' +
-            'Задача №  ' +
-            v.task_id +
-            '</span>' +
-            '</span>' +
-            '<button data-id="' + v.task_id + '" class="badge rounded-pill bg-primary mb-2 js-edit-task-button ms-4" type="button"> Изменить задачу</button>' +
-            status +
-            '<h6><strong>Имя: </strong>' + v.name + '</h6>' +
+            '<div class="col-xl-4 col-md-6 mb-4">' +
+            '<div class="card shadow mb-4">' +
+            '<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">' +
+            '<h6 class="m-0 font-weight-bold text-primary">' +
+            'Задача №  ' + v.task_id + '   -   ' + status + '</h6>' +
+            '<div class="dropdown no-arrow">' +
+            '<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+            '<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>' +
+            '</a>' +
+            '<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">' +
+            '<button data-id="' + v.task_id + '" class="dropdown-item" type="button">Изменить</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="card-header py-3">' +
+            '<h6><strong>Автор: </strong>' + v.name + '</h6>' +
             '<h6><strong>Email: </strong>' + v.address + '</h6>' +
-            '<h6><strong>Задача: </strong>' + v.text + '</h6>' +
+            '</div>' +
+            '<div class="card-body">' +
+            '<p>' + v.text + '</p>' +
             '</div>' +
             '</div>' +
             '</div>'
     }
     return dataMessage
+}
+
+//Проверка анмин не админ
+function queryAdmin(){
+    $.ajax({
+        url: '/adminstatus/check',
+        type: 'POST',
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
+            if (data.admin === true) {
+                $('#adminStatus').html('admin')
+                $('#inputAdmin').hide()
+                $('#outputAdmin').show()
+            } else {
+                $('#adminStatus').html('user')
+                $('#outputAdmin').hide()
+                $('#inputAdmin').show()
+            }
+        }
+    })
 }
 
 // Валидация Email
