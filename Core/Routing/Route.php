@@ -23,6 +23,7 @@ class Route
         $this->handler = $handler;
     }
 
+
     /**
      * @return mixed
      */

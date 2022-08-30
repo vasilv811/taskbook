@@ -61,7 +61,7 @@ class SetMessageController
         $message = $postParam['task'] ?? null;
         $status = trim($postParam['status']) ?? null;
         if (!$this->validator->isValidName($user)) {
-            return new JsonResponse(['error' => "Name введен некорректно", 'post' => $_POST]);
+            return new JsonResponse(['error' => "Name введен некорректно", $_POST]);
         }
         if (!$this->validator->isValidEmail($address)) {
             return new JsonResponse(['error' => 'Email введен некорректно']);
