@@ -173,8 +173,6 @@ function users(data) {
             '</div>' +
             '</div>'
     }
-    console
-    console.log(dataMessage)
     return dataMessage
 }
 
