@@ -5,20 +5,20 @@ namespace App;
 
 use Core\Http\Request;
 use Core\Routing\Route;
-use App\Controllers\IndexController;
+//use App\Controllers\IndexController;
 use Core\Routing\Router;
 use Core\Core;
-use Core\Renderer;
-use App\Controllers\SetMessageController;
-use App\Models\Tasks;
-use App\Models\Users;
-use App\Models\Emails;
-use App\Models\Admins;
-use Core\Validator;
-use App\Controllers\GetMessageController;
-use App\Controllers\PaginationController;
-use App\Controllers\AdminController;
-use App\Controllers\UpdateMessageController;
+//use Core\Renderer;
+//use App\Controllers\SetMessageController;
+//use App\Models\Tasks;
+//use App\Models\Users;
+//use App\Models\Emails;
+//use App\Models\Admins;
+//use Core\Validator;
+//use App\Controllers\GetMessageController;
+//use App\Controllers\PaginationController;
+//use App\Controllers\AdminController;
+//use App\Controllers\UpdateMessageController;
 
 
 class App
@@ -28,20 +28,26 @@ class App
     public function __construct()
     {
         session_start();
-        $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
-        $tasks = new Tasks();
-        $users = new Users();
-        $emails = new Emails();
-        $admins = new Admins();
-        $validator = new Validator();
+//        $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
+//        $tasks = new Tasks();
+//        $users = new Users();
+//        $emails = new Emails();
+//        $admins = new Admins();
+//        $validator = new Validator();
 
 
         $mainRoute = new Route (
             Request::METHOD_GET,
             '/',
             [
-                new IndexController($renderer),
+                'IndexController',
                 'getMainPage'
+
+//                new AdminController($admins),
+//                'getAdmins',
+
+//                'PaginationController',
+//                'getPagination'
             ]
         );
 
@@ -49,7 +55,7 @@ class App
             Request::METHOD_POST,
             '/message/set',
             [
-                new SetMessageController($tasks, $users, $emails, $validator),
+                'SetMessageController',
                 'setMessage',
             ]
         );
@@ -58,7 +64,7 @@ class App
             Request::METHOD_POST,
             '/admin/check',
             [
-                new AdminController($admins),
+                'AdminController',
                 'getAdmins',
             ]
         );
@@ -67,7 +73,7 @@ class App
             Request::METHOD_POST,
             '/admin/output',
             [
-                new AdminController($admins),
+                'AdminController',
                 'getAdminOutput',
             ]
         );
@@ -76,7 +82,7 @@ class App
             Request::METHOD_POST,
             '/mesagebytaskid/get',
             [
-                new GetMessageController($tasks),
+                'GetMessageController',
                 'getMessageByTaskId',
             ]
         );
@@ -85,16 +91,17 @@ class App
             Request::METHOD_POST,
             '/adminstatus/check',
             [
-                new AdminController($admins),
+                'AdminController',
                 'getStatusAdmin',
             ]
         );
+//        dump($adminStatus);
 
         $changeMessage = new Route(
             Request::METHOD_POST,
             '/chengemessage/set',
             [
-                new UpdateMessageController($tasks, $users, $emails, $validator),
+                'UpdateMessageController',
                 'changeMessage',
             ]
         );
@@ -103,7 +110,7 @@ class App
             Request::METHOD_POST,
             '/paginations/get',
             [
-                new PaginationController($tasks),
+                'PaginationController',
                 'getPagination',
             ]
         );

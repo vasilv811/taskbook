@@ -8,6 +8,7 @@ use Core\Http\Request;
 use Core\Http\Response;
 use Core\Routing\Router;
 
+
 class Core
 {
     private Router $router;
@@ -17,6 +18,11 @@ class Core
         $this->router = $router;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     * @throws \ReflectionException
+     */
     public function handleHttpRequest(Request $request): Response
     {
         $route = $this->router->getRouteForRequest($request);
@@ -24,6 +30,11 @@ class Core
             return new Response('Такая страница не найдена. Ошибка 404', [], Response::CODE_NOT_FOUND);
         }
         $handler = $route->getHandler();
+        $diContainer = new DiContainer();
+        $handler[0] = $diContainer->diContainer($handler[0]);
+        if (!$handler[0]) {
+            return new Response('Что-то пошло не так. Ошибка 500', [], Response::CODE_INTERNAL_ERROR);
+        }
         if (
             is_array($handler)
             && count($handler) === 2
@@ -54,5 +65,4 @@ class Core
         }
         echo $response->getContent();
     }
-
 }
