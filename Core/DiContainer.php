@@ -9,7 +9,6 @@ use App\Controllers\GetMessageController;
 use App\Controllers\SetMessageController;
 use App\Controllers\UpdateMessageController;
 use App\Models\Admins;
-use Core\Http\JsonResponse;
 use App\Controllers\IndexController;
 use Core\Renderer;
 use App\Controllers\PaginationController;

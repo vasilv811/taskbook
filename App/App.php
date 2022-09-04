@@ -5,20 +5,8 @@ namespace App;
 
 use Core\Http\Request;
 use Core\Routing\Route;
-//use App\Controllers\IndexController;
 use Core\Routing\Router;
 use Core\Core;
-//use Core\Renderer;
-//use App\Controllers\SetMessageController;
-//use App\Models\Tasks;
-//use App\Models\Users;
-//use App\Models\Emails;
-//use App\Models\Admins;
-//use Core\Validator;
-//use App\Controllers\GetMessageController;
-//use App\Controllers\PaginationController;
-//use App\Controllers\AdminController;
-//use App\Controllers\UpdateMessageController;
 
 
 class App
@@ -28,13 +16,6 @@ class App
     public function __construct()
     {
         session_start();
-//        $renderer = new Renderer(dirname(__DIR__ . '/../App/Views/Layouts/default.php'));
-//        $tasks = new Tasks();
-//        $users = new Users();
-//        $emails = new Emails();
-//        $admins = new Admins();
-//        $validator = new Validator();
-
 
         $mainRoute = new Route (
             Request::METHOD_GET,
@@ -42,12 +23,6 @@ class App
             [
                 'IndexController',
                 'getMainPage'
-
-//                new AdminController($admins),
-//                'getAdmins',
-
-//                'PaginationController',
-//                'getPagination'
             ]
         );
 
