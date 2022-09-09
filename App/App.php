@@ -3,25 +3,33 @@
 
 namespace App;
 
+use App\Controllers\AdminController;
+use App\Controllers\GetMessageController;
+use App\Controllers\PaginationController;
+use App\Controllers\SetMessageController;
+use App\Controllers\UpdateMessageController;
 use Core\Http\Request;
 use Core\Routing\Route;
 use Core\Routing\Router;
 use Core\Core;
+use App\Controllers\IndexController;
+
 
 
 class App
 {
     private $router;
+    private Core $core;
 
-    public function __construct()
+    public function __construct(Core $core)
     {
-        session_start();
+//        session_start();
 
         $mainRoute = new Route (
             Request::METHOD_GET,
             '/',
             [
-                'IndexController',
+                IndexController::class,
                 'getMainPage'
             ]
         );
@@ -30,7 +38,7 @@ class App
             Request::METHOD_POST,
             '/message/set',
             [
-                'SetMessageController',
+                SetMessageController::class,
                 'setMessage',
             ]
         );
@@ -39,7 +47,7 @@ class App
             Request::METHOD_POST,
             '/admin/check',
             [
-                'AdminController',
+                AdminController::class,
                 'getAdmins',
             ]
         );
@@ -48,7 +56,7 @@ class App
             Request::METHOD_POST,
             '/admin/output',
             [
-                'AdminController',
+                AdminController::class,
                 'getAdminOutput',
             ]
         );
@@ -57,7 +65,7 @@ class App
             Request::METHOD_POST,
             '/mesagebytaskid/get',
             [
-                'GetMessageController',
+                GetMessageController::class,
                 'getMessageByTaskId',
             ]
         );
@@ -66,7 +74,7 @@ class App
             Request::METHOD_POST,
             '/adminstatus/check',
             [
-                'AdminController',
+                AdminController::class,
                 'getStatusAdmin',
             ]
         );
@@ -76,7 +84,7 @@ class App
             Request::METHOD_POST,
             '/chengemessage/set',
             [
-                'UpdateMessageController',
+                UpdateMessageController::class,
                 'changeMessage',
             ]
         );
@@ -85,7 +93,7 @@ class App
             Request::METHOD_POST,
             '/paginations/get',
             [
-                'PaginationController',
+                PaginationController::class,
                 'getPagination',
             ]
         );
@@ -99,11 +107,12 @@ class App
         $router->addRoute($adminStatus);
         $router->addRoute($changeMessage);
         $router->addRoute($pagination);
+        $this->core = $core;
     }
 
     public function run()
     {
-        $core = new Core($this->router);
+        $core = $this->core->set($this->router);
 
         $request = new Request(
             $_SERVER['REQUEST_METHOD'],

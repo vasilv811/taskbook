@@ -12,10 +12,16 @@ use Core\Routing\Router;
 class Core
 {
     private Router $router;
+    private DiContainer $container;
 
-    public function __construct(Router $router)
+    public function __construct(DiContainer $container)
     {
+
+        $this->container = $container;
+    }
+    public function set(Router $router){
         $this->router = $router;
+        return $this;
     }
 
     /**
@@ -30,8 +36,7 @@ class Core
             return new Response('Такая страница не найдена. Ошибка 404', [], Response::CODE_NOT_FOUND);
         }
         $handler = $route->getHandler();
-        $diContainer = new DiContainer();
-        $handler[0] = $diContainer->diContainer($handler[0]);
+        $handler[0] = $this->container->get($handler[0]);
         if (!$handler[0]) {
             return new Response('Что-то пошло не так. Ошибка 500', [], Response::CODE_INTERNAL_ERROR);
         }
